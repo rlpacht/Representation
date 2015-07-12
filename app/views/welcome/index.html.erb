@@ -1,0 +1,21 @@
+Welcome!
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+
+</head>
+<body>
+	<div ng-app="PoliticsApp">
+		
+	    <div ng-controller="MainCtrl">
+
+	    	<input type="text" placeholder="Candidates Name" ng-model="politicianData.name"><br>
+	    	<input type="submit" ng-click="getData()"> 
+	        {{data}}
+
+	    </div>
+	</div>
+</body>
+</html>
