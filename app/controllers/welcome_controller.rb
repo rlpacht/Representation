@@ -18,7 +18,7 @@ class WelcomeController < ApplicationController
 			recipient_ft: politician_name, 
 			for_against: "for", 
 			cycle: '2014',
-			page: '1'q
+			page: '1'
 		}}
 		# response = HTTParty.get(url)
 		response = self.class.get("", query)

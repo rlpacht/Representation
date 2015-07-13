@@ -60,7 +60,7 @@ PoliticsApp.controller("MainCtrl", function ($scope, $http) {
     					name: $scope.politicianData.name
     	}
     	// var electionCycle = "2014";
-    	$http.get("/data.json", {params:{"name": politicianInfo.name}}).success(function (res) {
+    	$http.get("/contributions.json", {params:{"name": politicianInfo.name}}).success(function (res) {
     		debugger
     		$scope.data = res.data[1];
     	
