@@ -11,9 +11,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20150713164431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contributions", force: :cascade do |t|
+    t.string   "amount"
+    t.integer  "cycle"
+    t.string   "transaction_type"
+    t.integer  "politician_id"
+    t.string   "contributor_id"
+    t.string   "committee_name"
+    t.string   "committee_ext_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "contributors", force: :cascade do |t|
+    t.string   "name"
+    t.string   "organization_name"
+    t.string   "contributor_occupation"
+    t.string   "contributor_state"
+    t.string   "contributor_zipcode"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "politicians", force: :cascade do |t|
+    t.string   "name"
+    t.string   "recipient_ext_id"
+    t.string   "string"
+    t.string   "party"
+    t.string   "state"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
 
 end

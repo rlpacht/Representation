@@ -13,7 +13,11 @@ Welcome!
 
 	    	<input type="text" placeholder="Candidates Name" ng-model="politicianData.name"><br>
 	    	<input type="submit" ng-click="getData()"> 
-	        {{data}}
+
+	    	<div tree-structure chart-data="data">
+	    		{{data}}
+	    	</div>
+	        
 
 	    </div>
 	</div>
