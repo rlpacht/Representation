@@ -5,5 +5,5 @@ Rails.application.routes.draw do
 
   get "/data", to: "welcome#show_data"
 
-  get "/contributions", to: "politicians#contributions"
+  get "/contributions", to: "politicians#top_contributors"
 end
