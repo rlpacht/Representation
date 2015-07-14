@@ -54,64 +54,81 @@ class PoliticiansController < ApplicationController
 		# end
 
 
-		Contribution.joins(:contributor)
-								.where({politician: @politician,cycle: cycle})
-								.group(:contributor)
-								.count
-								.sort("sum(amount) DESC")
-								.limit(20)
+		# Contribution.joins(:contributor)
+		# 						.where({politician: @politician,cycle: cycle})
+		# 						.group(:contributor)
+		# 						.count
+		# 						.sort("sum(amount) DESC")
+		# 						.limit(20)
 
-		Contribution.joins(:contributor).where({politician_id: 1,cycle: 2014}).group(:contributor).count(:amount).sort("sum(amount) DESC").limit(20)
-		Contributor.joins(:contributor).group(:contributor_id).where({politician_id: 1,cycle: 2014}).select('SUM(amount) as tot').order('tot desc')
+		# Contribution.joins(:contributor).where({politician_id: 1,cycle: 2014}).group(:contributor).count(:amount).sort("sum(amount) DESC").limit(20)
+		# Contributor.joins(:contributor).group(:contributor_id).where({politician_id: 1,cycle: 2014}).select('SUM(amount) as tot').order('tot desc')
 
-		Contribution.where({politician: 1, cycle: 2014}).select("sum(amount) as total_amount").group("contributor_id")
-		# returns  [#<Contribution id: nil>, #<Contribution id: nil>, #<Contribution id: nil>,  ...]> 
-		 Contributor.group(:id)
-		 # returns <Contributor id: 1, name: "McCain-Palin Compliance Fund",
-		 #  organization_name: "McCain-Palin Compliance Fund", contributor_occupation: "",
-		 #  contributor_state: "DC", contributor_zipcode: "20005",
-		 #  created_at: "2015-07-14 03:56:31", updated_at: "2015-07-14 03:56:31"> 
-		 Contribution.group(:id).group(:contributor_id).where({politician_id: 1, cycle: 2014})
-		 returns #<Contribution id: 821, amount: -2600.0, cycle: 2014, transaction_type: "15", 
-		 # politician_id: 1, contributor_id: 26, committee_name: "Friends of John McCain", 
-		 # committee_ext_id: "C00540310", created_at: "2015-07-14 03:57:13", updated_at: "2015-07-14 03:57:13"> 
+		# Contribution.where({politician: 1, cycle: 2014}).select("sum(amount) as total_amount").group("contributor_id")
+		# # returns  [#<Contribution id: nil>, #<Contribution id: nil>, #<Contribution id: nil>,  ...]> 
+		#  Contributor.group(:id)
+		#  # returns <Contributor id: 1, name: "McCain-Palin Compliance Fund",
+		#  #  organization_name: "McCain-Palin Compliance Fund", contributor_occupation: "",
+		#  #  contributor_state: "DC", contributor_zipcode: "20005",
+		#  #  created_at: "2015-07-14 03:56:31", updated_at: "2015-07-14 03:56:31"> 
+		#  Contribution.group(:id).group(:contributor_id).where({politician_id: 1, cycle: 2014})
+		#  returns #<Contribution id: 821, amount: -2600.0, cycle: 2014, transaction_type: "15", 
+		#  # politician_id: 1, contributor_id: 26, committee_name: "Friends of John McCain", 
+		#  # committee_ext_id: "C00540310", created_at: "2015-07-14 03:57:13", updated_at: "2015-07-14 03:57:13"> 
 
-		Contribution.group(:id).group(:contributor_id).where({politician_id: 1, cycle: 2014}).order(:amount)
-		# returns #<Contribution id: 1, amount: 811479.0, cycle: 2014, transaction_type: "18g", politician_id: 1,
-		# contributor_id: 1, committee_name: "Friends of John McCain", committee_ext_id: "C00540310",
-		# created_at: "2015-07-14 03:56:31", updated_at: "2015-07-14 03:56:31"> 
+		# Contribution.group(:id).group(:contributor_id).where({politician_id: 1, cycle: 2014}).order(:amount)
+		# # returns #<Contribution id: 1, amount: 811479.0, cycle: 2014, transaction_type: "18g", politician_id: 1,
+		# # contributor_id: 1, committee_name: "Friends of John McCain", committee_ext_id: "C00540310",
+		# # created_at: "2015-07-14 03:56:31", updated_at: "2015-07-14 03:56:31"> 
 
-		Contribution.group(:id).group(:contributor_id).where({politician_id: 1, cycle: 2014}).order(amount: :desc)
-		# returns #<Contribution id: 1, amount: 811479.0, cycle: 2014, transaction_type: "18g", politician_id: 1,
-		# contributor_id: 1, committee_name: "Friends of John McCain", committee_ext_id: "C00540310",
-		# created_at: "2015-07-14 03:56:31", updated_at: "2015-07-14 03:56:31">
+		# Contribution.group(:id).group(:contributor_id).where({politician_id: 1, cycle: 2014}).order(amount: :desc)
+		# # returns #<Contribution id: 1, amount: 811479.0, cycle: 2014, transaction_type: "18g", politician_id: 1,
+		# # contributor_id: 1, committee_name: "Friends of John McCain", committee_ext_id: "C00540310",
+		# # created_at: "2015-07-14 03:56:31", updated_at: "2015-07-14 03:56:31">
 
-		 Contributor.joins(:contributions).group(:id)
-		# returns <Contributor id: 1, name: "McCain-Palin Compliance Fund",
-		# organization_name: "McCain-Palin Compliance Fund",contributor_occupation: "", contributor_state: "DC",
-		# contributor_zipcode: "20005",created_at: "2015-07-14 03:56:31",updated_at: "2015-07-14 03:56:31">
+		#  Contributor.joins(:contributions).group(:id)
+		# # returns <Contributor id: 1, name: "McCain-Palin Compliance Fund",
+		# # organization_name: "McCain-Palin Compliance Fund",contributor_occupation: "", contributor_state: "DC",
+		# # contributor_zipcode: "20005",created_at: "2015-07-14 03:56:31",updated_at: "2015-07-14 03:56:31">
 
-		Contributor.joins(:contributions).where(contributions: {contributor_id:  594}).length
+		# Contributor.joins(:contributions).where(contributions: {contributor_id:  594}).length
 
-			array = []
-		 Contributor.joins(:contributions).group(:id).find_each do |contribution|
-		 	 array = array.push(contribution)
-		 	end
-	 	# returns <Contributor id: 3, name: "NICHOLSON, DAVID A MR", 
-	 	# organization_name: "PVS Chemicals", contributor_occupation: "VICE PRESIDENT", 
-	 	# contributor_state: "MI", contributor_zipcode: "48236", created_at: "2015-07-14 03:56:31",
-	 	# updated_at: "2015-07-14 03:56:31">
+		# 	array = []
+		#  Contributor.joins(:contributions).group(:id).find_each do |contribution|
+		#  	 array = array.push(contribution)
+		#  	end
+	 # 	# returns <Contributor id: 3, name: "NICHOLSON, DAVID A MR", 
+	 # 	# organization_name: "PVS Chemicals", contributor_occupation: "VICE PRESIDENT", 
+	 # 	# contributor_state: "MI", contributor_zipcode: "48236", created_at: "2015-07-14 03:56:31",
+	 # 	# updated_at: "2015-07-14 03:56:31">
 
-	 	 array.each do |contributor|
-	 	 	contribution_array = contribution_array.push(c)
-	 	 	c = Contribution.find_by({contributor_id: contributor.id})
-	 	end
-	 	returns contribution_array[1]: 
+	 # 	 array.each do |contributor|
+	 # 	 	contribution_array = contribution_array.push(c)
+	 # 	 	c = Contribution.find_by({contributor_id: contributor.id})
+	 # 	end
+	 # 	returns contribution_array[1]: 
 	 	# <Contribution id: 5, amount: 354854.0, cycle: 2014, transaction_type: "18g", politician_id: 1,
 	 	# contributor_id: 2, committee_name: "Friends of John McCain", committee_ext_id: "C00540310",
 	 	# created_at: "2015-07-14 03:56:31", updated_at: "2015-07-14 03:56:31"> 
 
-	 	 Contribution.where({politician_id: 1, cycle: 2014}).group(:contributor_id).sum(:amount)
+	 	# Contribution.where({politician_id: 1, cycle: 2014}).group(:contributor_id).sum(:amount)
+	 	# returns 557=>250.0,
+
+	 	# Contribution.joins(:contributor).group(:name).sum(:amount)
+	 	# returns "WEISZ, GEORGE E MR"=>2600.0,
+	 	 	
+ 	 #  Contribution.joins(:contributor).group(:organization_name).sum(:amount)
+ 	 #  returns "National Confectioners Assn"=>1000.0,
+
+ 	 #  Contribution.joins(:contributor).group(:organization_name).group(:name).sum(:amount)
+ 	 #  ["Rubin & Rudman", "DETORE, JOHN MR"]=>2600.0,
+
+	  # Contribution.joins(:contributor).group(:organization_name).group(:name).group(:contributor_occupation).sum(:amount)
+	  # ["Sempra Energy", "Sempra Energy", ""]=>5000.0,
+
+   	contributions_list = Contribution.joins(:contributor).group(:organization_name).group(:name).sum(:amount).sort
+    # [["Trujillo Co", "TRUJILLO, SOLOMON DENNIS MR", "PRESIDENT"], 2600.0]
+    # ALWAYS USE sort. it makes it an array instead of a hash
 
 			# If the politician is in the db, check if any contributions 
 			# for the searched year are in the db. 
@@ -120,7 +137,7 @@ class PoliticiansController < ApplicationController
 			#TODO # each time a request is made, if there is a politican, 
 			# check if any contributions for the cycle are already in the db (find_by({politician: "", cycle: ""})
 		respond_to do |f|
-		  f.json { render json: {data: @contributions}}
+		  f.json { render json: {data: contributions_list}}
 		  f.html
 		end
 	end 
