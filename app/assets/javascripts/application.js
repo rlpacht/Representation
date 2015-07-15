@@ -54,31 +54,42 @@ PoliticsApp.controller("MainCtrl", function ($scope, $http) {
 							}
     	
     $scope.data = null;
+    $scope.total = null;
+    // $scope.graph = {'width': 1000, 'height': 1000}
+    // $scope.circles = []
+
     
-    $scope.getData = function() {
+     $scope.getData = function() {
     	var politicianInfo = {
     					name: $scope.politicianData.name
     	}
-    	// var electionCycle = "2014";
+    // 	// var electionCycle = "2014";
     	$http.get("/contributions.json", {params:{"name": politicianInfo.name}}).success(function (res) {
     		debugger
-    		$scope.data = res.data;
+            var data = JSON.parse(res.data)
+            
+            // for (var i = 0; i < data.length; i++) {
+            //     radius = data[i][1] % 39
+            //     x = Math.floor(Math.random() * 900 + 10)
+            //     y = Math.floor(Math.random() * 900 + 10)
+            //     $scope.circles[i] = {'x': x, 'y':y, 'radius':radius}
+            // } 
+            // debugger
+            // x = 
+            // $scope.total = res.data[1];
+            // for(var i = 0; i < data.length; i++){
+            //     $("div").append("p").text(res.data[i])    
+            // }
+      //       var string = ""
+      //       for (var i = 0; i < data.length; i++){
+      //           string += data[i][0][0] + " ";
+      //           string += data[i][0][1] + " ";
+      //           string += data[i][1] + " ";
+      //       }
+    		$scope.data = data;
+            // PoliticsApp.directive.displayData()
     	
     	});
-
-        // for (var key in validation_messages) {
-        //    if (validation_messages.hasOwnProperty(key)) {
-        //        var obj = validation_messages[key];
-        //         for (var prop in obj) {
-        //           // important check that this is objects own property 
-        //           // not from prototype prop inherited
-        //           if(obj.hasOwnProperty(prop)){
-        //             alert(prop + " = " + obj[prop]);
-        //           }
-        //        }
-        //     }
-        // }
-
     }
 	
 });
@@ -87,7 +98,7 @@ PoliticsApp.controller("MainCtrl", function ($scope, $http) {
 // 	return{
 // 		restrict: "EA",
 // 		template: "<svg></svg>",
-// 		link: function(scope, elem, attrs){
+// 		link: function(scope, elem, attrs, http){
 // 			var dataToShow = scope[attrs.chartData];
 
 // 			var i = 0,
@@ -114,24 +125,36 @@ PoliticsApp.controller("MainCtrl", function ($scope, $http) {
 // 			  .append("g")
 // 			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// 			d3.json("/data.json", function (error, res) {
-// 					var politician  = JSON.parse(res.data)
-// 					if (error) throw error;
-// 					debugger
-// 					root = politician;
-// 					root.x0 = height / 2;
-// 					root.y0 = 0;
+//             scope.sendData = function(res) {
+//                 parsed_res = JSON.parse(res)
+//                 scope.data = parsed_res
+//                 debugger
+//             }
 
-// 					function collapse(d) {
-// 						if (d.children) {
-// 					    	d._children = d.children;
-// 					    	d._children.forEach(collapse);
-// 					    	d.children = null;
-// 					  	}
-// 					}
-// 					root.forEach(collapse);
-// 					update(root);
-// 				});
+// 			scope.getData = function () {
+//                 d3.json("/contributions.json", function (error, res) {
+//                     debugger
+//                     scope.sendData(res.data)
+//                         // var politician  = JSON.parse(res.data)
+//                         // if (error) throw error;
+//                         // debugger
+//                         // root = politician;
+//                         // root.x0 = height / 2;
+//                         // root.y0 = 0;
+
+//                         // function collapse(d) {
+//                         //  if (d.children) {
+//                         //      d._children = d.children;
+//                         //      d._children.forEach(collapse);
+//                         //      d.children = null;
+//                         //      }
+//                         // }
+//                         // root.forEach(collapse);
+//                         // update(root);
+//                     });
+//             }
+
+
 
 // 				d3.select(self.frameElement).style("height", "800px");
 

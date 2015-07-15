@@ -3,7 +3,7 @@ Welcome!
 <html>
 <head>
 	<title></title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
 
 </head>
 <body>
@@ -11,12 +11,24 @@ Welcome!
 		
 	    <div ng-controller="MainCtrl">
 
-	    	<input type="text" placeholder="Candidates Name" ng-model="politicianData.name"><br>
-	    	<input type="submit" ng-click="getData()"> 
-
-	    	<div tree-structure chart-data="data">
+	    	 <form>
+	    	 	<input type="text" placeholder="Candidates Full Name" ng-model="politicianData.name"><br>
+	    	 	<input type="submit" ng-click="getData()">
+	    	 </form> <br>
+	    	<!-- {{ total }} <br> -->
+	    	<div tree-structure chart-data="data"><br>
 	    		{{data}}
 	    	</div>
+	    	<!-- <svg ng-attr-height="{{graph.height}}" ng-attr-width="{{graph.width}}">
+
+	    		<circle ng-repeat="circle in circles" 
+	    		        ng-attr-cx="{{circle.x}}" 
+	    		        ng-attr-cy="{{circle.y}}" 
+	    		        ng-attr-r= "{{circle.radius}}">
+	    		</circle>
+
+	    	</svg>   -->
+
 	        
 
 	    </div>
