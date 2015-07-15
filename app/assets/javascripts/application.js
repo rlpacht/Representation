@@ -13,249 +13,127 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require angular/angular 
+//= require Chart
+//= require angular/angular
+//= require angular-chart.js/dist/angular-chart.js
 //= require_tree .
 
-var PoliticsApp = angular.module("PoliticsApp", [])
+
+
+
+var PoliticsApp = angular.module("PoliticsApp", ["chart.js"])
+.config(['ChartJsProvider', function (ChartJsProvider) {
+    // Configure all charts
+   // ChartJsProvider.setOptions({
+   //    colours: ['#97BBCD', '#DCDCDC', '#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
+   //    responsive: true
+   //  });
+    // Configure all line charts
+  //   ChartJsProvider.setOptions('Line', {
+  //     datasetFill: false
+  //   });
+  // }]).controller("LineCtrl", ['$scope', '$timeout', function ($scope, $timeout) {
+
+  // $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+  // $scope.series = ['Series A', 'Series B'];
+  // $scope.data = [
+  //   [65, 59, 80, 81, 56, 55, 40],
+  //   [28, 48, 40, 19, 86, 27, 90]
+  // ];
+  // $scope.onClick = function (points, evt) {
+  //   console.log(points, evt);
+  // };
+
+  // // Simulate async data update
+  // $timeout(function () {
+  //   $scope.data = [
+  //     [28, 48, 40, 19, 86, 27, 90],
+  //     [65, 59, 80, 81, 56, 55, 40]
+  //   ];
+  // }, 3000);
+}]);
 
 PoliticsApp.config(["$httpProvider", function ($httpProvider) {
     $httpProvider.
         defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content");
 }])
 
-// angular.module('PoliticsApp.controllers').
-// 		controller('MainCtrl', ['$scope', '$http', function($scope, $http){
-// 		$scope.politicianData = {
-// 								"name" : null
-// 								}
-	    	
-// 	    $scope.data = null;
-	    
-// 	    $scope.getData = function() {
-// 	    	var politicianInfo = {
-// 	    					name: $scope.politicianData.name
-// 	    	}
-// 	    	// var electionCycle = "2014";
-// 	    	$http.get("/data.json", {params:{"name": politicianInfo.name}}).success(function (res) {
-// 	    		var data = JSON.parse(res.data)
-// 	    		$scope.data = data[1];
-	    	
-// 	    	});
 
-// 	    }		
-
-// }])
-
-
-PoliticsApp.controller("MainCtrl", function ($scope, $http) {
-
-	$scope.politicianData = {
-							"name" : null
-							}
-    	
-    $scope.data = null;
-    $scope.total = null;
-    // $scope.graph = {'width': 1000, 'height': 1000}
-    // $scope.circles = []
-
-    
-     $scope.getData = function() {
-    	var politicianInfo = {
-    					name: $scope.politicianData.name
-    	}
-    // 	// var electionCycle = "2014";
-    	$http.get("/contributions.json", {params:{"name": politicianInfo.name}}).success(function (res) {
-    		debugger
-            var data = JSON.parse(res.data)
+PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', function ($scope, $timeout, $http) {
+    $scope.politicianData = {
+                                "name" : null
+                                }
             
-            // for (var i = 0; i < data.length; i++) {
-            //     radius = data[i][1] % 39
-            //     x = Math.floor(Math.random() * 900 + 10)
-            //     y = Math.floor(Math.random() * 900 + 10)
-            //     $scope.circles[i] = {'x': x, 'y':y, 'radius':radius}
-            // } 
-            // debugger
-            // x = 
-            // $scope.total = res.data[1];
-            // for(var i = 0; i < data.length; i++){
-            //     $("div").append("p").text(res.data[i])    
-            // }
-      //       var string = ""
-      //       for (var i = 0; i < data.length; i++){
-      //           string += data[i][0][0] + " ";
-      //           string += data[i][0][1] + " ";
-      //           string += data[i][1] + " ";
-      //       }
-    		$scope.data = data;
-            // PoliticsApp.directive.displayData()
-    	
-    	});
-    }
-	
-});
+        $scope.data = null;
+        $scope.total = null;
+        $scope.labels = null;
+        $scope.pacs = null;
+        $scope.info = null;
+        $scope.title = null
 
-// PoliticsApp.directive("treeStructure", function ($window) {
-// 	return{
-// 		restrict: "EA",
-// 		template: "<svg></svg>",
-// 		link: function(scope, elem, attrs, http){
-// 			var dataToShow = scope[attrs.chartData];
+        
+        $scope.getData = function() {
+            var politicianInfo = {
+                    name: $scope.politicianData.name
+                   }
+        //  // var electionCycle = "2014";
+            $http.get("/contributions.json", {params:{"name": politicianInfo.name}}).success(function (res) {
+                debugger
+                $scope.data = [];
+                $scope.labels = [];
+                var data = res.data
+                for (var i = 0; i < data.length; i++){
+                    var name = data[i][0]
+                    var amount = data[i][1]
+                    console.log(name)
+                    $scope.labels = $scope.labels.concat(name);
+                    $scope.data = $scope.data.concat(amount);
+                }
+                $scope.allResults = res.data
+                $http.get("/total.json", {params:{"name": politicianInfo.name}}).success(function (res) {
+                    $scope.total = res.data.total
+                    var totalMinusTopContributors = $scope.total;
+                    for (var i = 0; i < $scope.data.length; i++) {
+                        totalMinusTopContributors -= $scope.data[i]
+                    }
+                    $scope.labels = $scope.labels.concat("total")
+                    $scope.data = $scope.data.concat(totalMinusTopContributors)
+            
+                })
+                $http.get("/amount_from_pacs.json", {params:{"name": politicianInfo.name}}).success(function (res) {
+                    debugger
+                    $scope.info = [];
+                    $scope.titles = [];
+                    var data = res.data
+                    for (var i = 0; i < data.length; i++){
+                        var name = data[i][0]
+                        var amount = data[i][1]
+                        console.log(name)
+                        $scope.titles = $scope.titles.concat(name);
+                        $scope.info = $scope.info.concat(amount);
+                    }
 
-// 			var i = 0,
-// 			    duration = 750,
-// 			    root;
+                    var totalMinusTopPacs = $scope.total;
+                    for (var i = 0; i < $scope.info.length; i++) {
+                        totalMinusTopPacs -= $scope.info[i]
+                    }
 
-// 			var margin = {top: 20, right: 120, bottom: 20, left: 120},
-// 					    width = 960 - margin.right - margin.left,
-// 					    height = 800 - margin.top - margin.bottom;
+                    $scope.titles = $scope.titles.concat("total")
+                    $scope.info = $scope.info.concat(totalMinusPacs)
+                })
+                
+                $scope.$on('create', function (event, chart) {
+                    
+                  console.log(chart);
+                });
 
-// 			var d3 = $window.d3;
-// 			var rawSvg = elem.find("svg")[0];
-// 			var svg = d3.select(rawSvg);
-
-// 			var tree = d3.layout.tree()
-// 			    .size([height, width]);
-
-// 			var diagonal = d3.svg.diagonal()
-// 			    .projection(function(d) { return [d.y, d.x]; });
-
-// 			var svg = d3.select("svg")
-// 			    .attr("width", width + margin.right + margin.left)
-// 			    .attr("height", height + margin.top + margin.bottom)
-// 			  .append("g")
-// 			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-//             scope.sendData = function(res) {
-//                 parsed_res = JSON.parse(res)
-//                 scope.data = parsed_res
-//                 debugger
-//             }
-
-// 			scope.getData = function () {
-//                 d3.json("/contributions.json", function (error, res) {
-//                     debugger
-//                     scope.sendData(res.data)
-//                         // var politician  = JSON.parse(res.data)
-//                         // if (error) throw error;
-//                         // debugger
-//                         // root = politician;
-//                         // root.x0 = height / 2;
-//                         // root.y0 = 0;
-
-//                         // function collapse(d) {
-//                         //  if (d.children) {
-//                         //      d._children = d.children;
-//                         //      d._children.forEach(collapse);
-//                         //      d.children = null;
-//                         //      }
-//                         // }
-//                         // root.forEach(collapse);
-//                         // update(root);
-//                     });
-//             }
+                
+            });
+        }
 
 
+    $timeout(function () {
+    }, 500);
+}]);
 
-// 				d3.select(self.frameElement).style("height", "800px");
 
-// 				function update(source) {
-
-// 				  // Compute the new tree layout.
-// 				  var nodes = tree.nodes(root).reverse(),
-// 				      links = tree.links(nodes);
-
-// 				  // Normalize for fixed-depth.
-// 				  nodes.forEach(function(d) { d.y = d.depth * 180; });
-// 				  	// Update the nodes…
-// 				  	  var node = svg.selectAll("g.node")
-// 				  	      .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-// 				  	  // Enter any new nodes at the parent's previous position.
-// 				  	  var nodeEnter = node.enter().append("g")
-// 				  	      .attr("class", "node")
-// 				  	      .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-// 				  	      .on("click", click);
-
-// 				  	  nodeEnter.append("circle")
-// 				  	      .attr("r", 1e-6)
-// 				  	      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-// 				  	  nodeEnter.append("text")
-// 				  	      .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-// 				  	      .attr("dy", ".35em")
-// 				  	      .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-// 				  	      .text(function(d) { return d.name; })
-// 				  	      .style("fill-opacity", 1e-6);
-
-// 				  	  // Transition nodes to their new position.
-// 				  	  var nodeUpdate = node.transition()
-// 				  	      .duration(duration)
-// 				  	      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
-
-// 				  	  nodeUpdate.select("circle")
-// 				  	      .attr("r", 4.5)
-// 				  	      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-// 				  	  nodeUpdate.select("text")
-// 				  	      .style("fill-opacity", 1);
-
-// 				  	  // Transition exiting nodes to the parent's new position.
-// 				  	  var nodeExit = node.exit().transition()
-// 				  	      .duration(duration)
-// 				  	      .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
-// 				  	      .remove();
-
-// 				  	  nodeExit.select("circle")
-// 				  	      .attr("r", 1e-6);
-
-// 				  	  nodeExit.select("text")
-// 				  	      .style("fill-opacity", 1e-6);
-
-// 				  	  // Update the links…
-// 				  	  var link = svg.selectAll("path.link")
-// 				  	      .data(links, function(d) { return d.target.id; });
-
-// 				  	  // Enter any new links at the parent's previous position.
-// 				  	  link.enter().insert("path", "g")
-// 				  	      .attr("class", "link")
-// 				  	      .attr("d", function(d) {
-// 				  	        var o = {x: source.x0, y: source.y0};
-// 				  	        return diagonal({source: o, target: o});
-// 				  	      });
-
-// 				  	  // Transition links to their new position.
-// 				  	  link.transition()
-// 				  	      .duration(duration)
-// 				  	      .attr("d", diagonal);
-
-// 				  	  // Transition exiting nodes to the parent's new position.
-// 				  	  link.exit().transition()
-// 				  	      .duration(duration)
-// 				  	      .attr("d", function(d) {
-// 				  	        var o = {x: source.x, y: source.y};
-// 				  	        return diagonal({source: o, target: o});
-// 				  	      })
-// 				  	      .remove();
-
-// 				  	  // Stash the old positions for transition.
-// 				  	  nodes.forEach(function(d) {
-// 				  	    d.x0 = d.x;
-// 				  	    d.y0 = d.y;
-// 				  	  });
-// 				  	}
-
-// 				  	// Toggle children on click.
-// 				  	function click(d) {
-// 				  	  if (d.children) {
-// 				  	    d._children = d.children;
-// 				  	    d.children = null;
-// 				  	  } else {
-// 				  	    d.children = d._children;
-// 				  	    d._children = null;
-// 				  	  }
-// 				  	  update(d);
-// 				  	}
-// 			return d3		 
-// 		}
-// 	};
-// });

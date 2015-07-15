@@ -3,34 +3,25 @@ Welcome!
 <html>
 <head>
 	<title></title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
 
 </head>
 <body>
 	<div ng-app="PoliticsApp">
 		
-	    <div ng-controller="MainCtrl">
+	    <div ng-controller="GraphCtrl">
 
-	    	 <form>
-	    	 	<input type="text" placeholder="Candidates Full Name" ng-model="politicianData.name"><br>
+	    	<form>
+	    		<input type="text" placeholder="Candidates Full Name" ng-model="politicianData.name"><br>
 	    	 	<input type="submit" ng-click="getData()">
-	    	 </form> <br>
-	    	<!-- {{ total }} <br> -->
-	    	<div tree-structure chart-data="data"><br>
-	    		{{data}}
-	    	</div>
-	    	<!-- <svg ng-attr-height="{{graph.height}}" ng-attr-width="{{graph.width}}">
+	    	</form> <br>
 
-	    		<circle ng-repeat="circle in circles" 
-	    		        ng-attr-cx="{{circle.x}}" 
-	    		        ng-attr-cy="{{circle.y}}" 
-	    		        ng-attr-r= "{{circle.radius}}">
-	    		</circle>
+	    	<canvas id="pie" class="chart chart-pie" data="data"
+	    	   labels="labels"></canvas> <br>
 
-	    	</svg>   -->
-
-	        
-
+    	   <canvas id="doughnut" class="chart chart-doughnut" data="info"
+    	   labels="titles"></canvas> <br>
+	    	{{ allResults }} <br>
+	    		
 	    </div>
 	</div>
 </body>

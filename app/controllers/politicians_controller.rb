@@ -9,40 +9,23 @@ class PoliticiansController < ApplicationController
 		politician_name = params[:name] || 'john mccain'
 		politician_name.downcase!
 		cycle = params[:cycle] || '2014'
-		limit = params[:limit] || 30
+		limit = params[:limit] || 20
 
 		check_database(politician_name, cycle)
-
-		# Contributor.select('SUM(contributions.amount), contributors.name, contributors.id').joins(:contributions).where("contributions.politician_id" => 1, "contributions.cycle" => 2014).group('contributors.id').order('SUM(amount) DESC').limit(10)
-
-
-		# Contribution.joins(:contributor).group("contributors.name").where({politician_id: 1, cycle: 2014}).order('SUM(contributions.amount) DESC').limit(30).sum(:amount)
-		
-	  # contributions_list = []
+		# top_contributors_hash = Contribution.joins(:contributor).group("contributors.name").group("transaction_id").where({politician_id: 1, cycle: 2014}).where.not({transaction_id: 'pac2pac'}).order('SUM(contributions.amount) DESC').limit(10).sum(:amount)
+		# TODO: Move this into a helper, so it can be used independently
+		# of sending it as a response
 	  @politician = Politician.find_by_name(politician_name)
-   	# stored_contributions = Contribution.joins(:contributor)
-   	# 	.group(:organization_name)
-   	# 	.group(:name)
-   	# 	.where({politician_id: @politician.id, cycle: cycle})
-   	# 	.sum(:amount)
-   	# 	.order('SUM(amount) DESC')
    	top_contributors_hash = Contribution
    		.joins(:contributor)
    		.group("contributors.name")
    		.where({politician_id: @politician.id, cycle: cycle})
+   		.where.not({transaction_id: 'pac2pac'})
    		.order('SUM(contributions.amount) DESC')
    		.limit(limit)
    		.sum(:amount)
    	sorted = top_contributors_hash.sort_by { |key, value| value }.reverse()
 
-
-   	# stored_contributions = stored_contributions.sort_by do |index_zero, index_one|
-   	# 	index_one
-   	# end
-   	# array_length = stored_contributions.length
-   	# stored_contributions = stored_contributions[array_length - 20 .. -1]
-   	# contributions_list = contributions_list.push(stored_contributions)
-   	# contributions_list = contributions_list.push(total_raised_in_cycle)
 
 		respond_to do |f|
 		  f.json { render json: {data: sorted}}
@@ -57,19 +40,41 @@ class PoliticiansController < ApplicationController
 
 		check_database(politician_name, cycle)
 
-		# Contributor.joins(:contributions).sum(:amount)
+		# TODO: Move this into a helper, so it can be used independently
+		# of sending it as a response
 		total = Contribution
 			.where({politician_id: @politician.id, cycle: cycle})
 			.sum(:amount)
+
 		respond_to do |f|
 		  f.json { render json: {data: {total: total}}}
 		  f.html
 		end
 	end
 
+	def pac_money
+		politician_name = params[:name] || 'john mccain'
+		politician_name.downcase!
+		cycle = params[:cycle] || '2014'
+
+		@politician = Politician.find_by_name(politician_name)
+   	pacs = Contribution
+   		.joins(:contributor)
+   		.group("contributors.name")
+   		.where({politician_id: @politician.id, cycle: cycle, transaction_id: 'pac2pac'})
+   		.order('SUM(contributions.amount) DESC')
+   		.sum(:amount).sort()
+
+   		respond_to do |f|
+   		  f.json { render json: {data: pacs}}
+   		  f.html
+   		end
+	end
+
 	private
 
 	# Check if the politician being searched is already in the db
+	# TODO: Make this fail in a better way when sunlight returns no results
 	def check_database (politician_name, cycle)
 		if Politician.find_by_name(politician_name).nil?
 			# If the politian is not the in db, none of its contributions are either. 
@@ -103,6 +108,7 @@ class PoliticiansController < ApplicationController
 					name_key = "contributor_name"
 				else 
 					name_key = "organization_name"
+				end
 				contributor_info = {
 												name: contribution[name_key],
 												contributor_name: contribution["contributor_name"],
@@ -129,7 +135,7 @@ class PoliticiansController < ApplicationController
 											committee_ext_id: contribution["committee_ext_id"],
 											politician_id: politician_id,
 											contributor_id: contributor.id,
-											committee_ext_id: parse_transaction_id(contribution["transaction_id"])
+											transaction_id: parse_transaction_id(contribution["transaction_id"]),
 											}
 			@contribution = Contribution.create(contribution_info)
 	end
