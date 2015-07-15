@@ -102,6 +102,7 @@ class PoliticiansController < ApplicationController
 	end
 
 	def add_contributors_and_contributions(politician_id, contributions)
+		time_entered = Time.now()
 		contributions.each do |contribution|
 			if Contributor.find_by_name(contribution["contributor_name"]).nil?
 				if contribution["organization_ext_id"] == ""
@@ -121,6 +122,9 @@ class PoliticiansController < ApplicationController
 			end
 			add_contribution(politician_id, contribution)
 		end
+		time_finished = Time.now()
+		p "start: #{time_entered}"
+		p "end: #{time_finished}"
 	end
 
 	def add_contribution(politician_id, contribution)
