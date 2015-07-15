@@ -102,25 +102,33 @@ class PoliticiansController < ApplicationController
 	end
 
 	def add_contributors_and_contributions(politician_id, contributions)
-		contributions.each do |contribution|
-			if Contributor.find_by_name(contribution["contributor_name"]).nil?
-				if contribution["organization_ext_id"] == ""
-					name_key = "contributor_name"
-				else 
-					name_key = "organization_name"
-				end
-				contributor_info = {
-												name: contribution[name_key],
-												contributor_name: contribution["contributor_name"],
-												organization_name: contribution["organization_name"],
-												contributor_occupation: contribution["contributor_occupation"],
-												contributor_state: contribution["contributor_state"],
-												contributor_zipcode: contribution["contributor_zipcode"],
-												}
-				@contributor = Contributor.create(contributor_info)
-			end
-			add_contribution(politician_id, contribution)
+		time_entered = Time.now()
+		ActiveRecord::Base.transaction do
+
+		  contributions.each do |contribution|
+		  	if Contributor.find_by_name(contribution["contributor_name"]).nil?
+		  		if contribution["organization_ext_id"] == ""
+		  			name_key = "contributor_name"
+		  		else 
+		  			name_key = "organization_name"
+		  		end
+		  		contributor_info = {
+		  										name: contribution[name_key],
+		  										contributor_name: contribution["contributor_name"],
+		  										organization_name: contribution["organization_name"],
+		  										contributor_occupation: contribution["contributor_occupation"],
+		  										contributor_state: contribution["contributor_state"],
+		  										contributor_zipcode: contribution["contributor_zipcode"],
+		  										}
+		  		@contributor = Contributor.create(contributor_info)
+
+		  	end
+		  	add_contribution(politician_id, contribution)
+		  end
 		end
+		time_finished = Time.now()
+		p "start: #{time_entered}"
+		p "end: #{time_finished}"
 	end
 
 	def add_contribution(politician_id, contribution)
