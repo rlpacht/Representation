@@ -1,4 +1,3 @@
-Welcome!
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,20 +5,25 @@ Welcome!
 
 </head>
 <body>
+	<div id="page-header" class="page-header">
+	  <h1 class="app-name">Politics <!-- <small>Subtext for header</small> --></h1>
+	</div>
 	<div ng-app="PoliticsApp">
 		
 	    <div ng-controller="GraphCtrl">
 
-	    	<form>
-	    		<input type="text" placeholder="Candidates Full Name" ng-model="politicianData.name"><br>
-	    	 	<input type="submit" ng-click="getData()">
-	    	</form> <br>
+	    	
+    		<form id="politician-search" class="input-group input-group-lg">
+    			<input class="search-bar" type="text" placeholder="Candidates Full Name" ng-model="politicianData.name">
+    	 		<input class="submit-button" type="submit" ng-click="getData()">
+    		</form> <br>
 
 	    	<canvas id="pie" class="chart chart-pie" data="data"
-	    	   labels="labels"></canvas> <br>
-
+	    	   labels="labels" legend="true" height="90"></canvas> 
+	    	   <!-- This chart does not show up even when placed above previous chart -->
+	    	   <!-- how I am constructing it must be wrong -->
     	   <canvas id="doughnut" class="chart chart-doughnut" data="info"
-    	   labels="titles"></canvas> <br>
+    	   labels="titles" legend="true" height="90"></canvas> <br>
 	    	{{ allResults }} <br>
 	    		
 	    </div>

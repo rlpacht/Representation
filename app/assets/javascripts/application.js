@@ -89,6 +89,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', function ($s
                     $scope.labels = $scope.labels.concat(name);
                     $scope.data = $scope.data.concat(amount);
                 }
+
                 $scope.allResults = res.data
                 $http.get("/total.json", {params:{"name": politicianInfo.name}}).success(function (res) {
                     $scope.total = res.data.total
@@ -96,7 +97,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', function ($s
                     for (var i = 0; i < $scope.data.length; i++) {
                         totalMinusTopContributors -= $scope.data[i]
                     }
-                    $scope.labels = $scope.labels.concat("total")
+                    $scope.labels = $scope.labels.concat("TOTAL")
                     $scope.data = $scope.data.concat(totalMinusTopContributors)
             
                 })
@@ -118,8 +119,10 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', function ($s
                         totalMinusTopPacs -= $scope.info[i]
                     }
 
-                    $scope.titles = $scope.titles.concat("total")
-                    $scope.info = $scope.info.concat(totalMinusPacs)
+                    $scope.titles = $scope.titles.concat("TOTAL")
+                    $scope.titles = $scope.titles.concat($scope.labels)
+                    $scope.info = $scope.info.concat(totalMinusTopPacs)
+                    $scope.info = $scope.info.concat($scope.data)
                 })
                 
                 $scope.$on('create', function (event, chart) {
