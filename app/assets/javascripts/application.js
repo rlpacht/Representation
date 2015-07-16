@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require bootstrap/dist/js/bootstrap.min.js
 //= require Chart
 //= require angular/angular
 //= require angular-chart.js/dist/angular-chart.js
@@ -33,10 +34,32 @@ PoliticsApp.config(["$httpProvider", function ($httpProvider) {
 }])
 
 
+
 PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerService', function ($scope, $timeout, $http, usSpinnerService) {
+        $scope.politicianList = [
+        'John Mccain',
+        'Nancy Pelosi',
+        'Ted Cruz',
+        'Marco Rubio',
+        'Charles E. Schumer',
+        'Bernie Sanders',
+        'John Boehner',
+        'Matt Salmon',
+        'Rick Crawford',
+        'French Hill',
+        'Steve Womack',
+        'Barbara Lee',
+        'Ted Yoho',
+        'Pete King',
+        'Tim Murphy',
+        'Tom Rice'];
+
+
+
     $scope.politicianData = {
                                 "name" : null,
-                                "electionCycle" : null
+                                "electionCycle" : null,
+                                "limit": null
                                 }
             
         $scope.data = null;
@@ -55,14 +78,21 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
             }
         
         $scope.getData = function() {
-
             var politicianInfo = {
                     name: $scope.politicianData.name,
-                    electionCycle: $scope.politicianData.electionCycle
+                    electionCycle: $scope.politicianData.electionCycle,
+                    limit: $scope.politicianData.limit
                    }
+
+
+                   // if (politicianInfo.name.split(" ").length === 1 || politicianInfo.name === null) {
+                   //  $("#myAlert").alert()
+                   // }
+
             $scope.startSpin();
         //  // var electionCycle = "2014";
-            $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle}}).success(function (res) {
+            $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res) {
+                debugger
                 $scope.data = [];
                 var resData = [];
                 $scope.labels = [];
@@ -75,9 +105,12 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                     resLabels = resLabels.concat(name);
                     resData = resData.concat(amount);
                 }
+                // .error(function (data) {
+                //     $().alert(data)
+                // })
 
                 $scope.allResults = res.data
-                $http.get("/total.json", {params:{"name": politicianInfo.name}}).success(function (res) {
+                $http.get("/total.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res) {
                     $scope.total = res.data.total
                     var totalMinusTopContributors = $scope.total;
                     for (var i = 0; i < resData.length; i++) {
@@ -91,7 +124,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                 // This method displays two totals because I am adding it twice
                 // once after subtracting pac contributions
                 // and again when I concat $scope.data because it already contains a total
-                $http.get("/amount_from_pacs.json", {params:{"name": politicianInfo.name}}).success(function (res) {
+                $http.get("/amount_from_pacs.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res) {
                     $scope.info = [];
                     $scope.titles = [];
                     var data = res.data
@@ -115,7 +148,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
 
                 })
 
-                $http.get("/gender_contributions.json", {params:{"name": politicianInfo.name}}).success(function (res) {
+                $http.get("/gender_contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res) {
                     var data = res.data;
                     $scope.gender_donation = [];
                     $scope.gender_name = [];
