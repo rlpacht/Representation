@@ -37,7 +37,6 @@ PoliticsApp.config(["$httpProvider", function ($httpProvider) {
 
 
 PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerService', function ($scope, $timeout, $http, usSpinnerService) {
-<<<<<<< HEAD
 
     $scope.politicianList = [
         {name:'John Mccain'},
@@ -86,7 +85,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
         
         $scope.getData = function() {
             var politicianInfo = {
-                    name: $scope.politicianData.name,
+                    name: $scope.politicianData.name.title,
                     electionCycle: $scope.politicianData.electionCycle,
                     limit: $scope.politicianData.limit
                    }

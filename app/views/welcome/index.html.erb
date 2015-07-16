@@ -25,8 +25,8 @@
 	    		</button>
 	    		<h4> Please input the politician's full name</h4>
 	    	</div> -->
-    		<form id="politician-search" class="input-group input-group-lg">
-    	<span angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="politicianList" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" input-changed="inputChanged">
+    		<form id="politician-search" class="input-group input-group-lg form-inline">
+    	<span angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="politicianList" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small form-inline" input-changed="inputChanged" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
           </span>
     			<input class="cycle-input" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
     			<input class="limit-bar" type="number" placeholder="Number of 'Top' results" ng-model="politicianData.limit">
