@@ -55,10 +55,6 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
             }
         
         $scope.getData = function() {
-            $scope.$on('destroy', function (event, chart) {
-                                
-                              console.log(chart);
-                            });
 
             var politicianInfo = {
                     name: $scope.politicianData.name,
@@ -67,7 +63,6 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
             $scope.startSpin();
         //  // var electionCycle = "2014";
             $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle}}).success(function (res) {
-                debugger
                 $scope.data = [];
                 var resData = [];
                 $scope.labels = [];
@@ -97,7 +92,6 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                 // once after subtracting pac contributions
                 // and again when I concat $scope.data because it already contains a total
                 $http.get("/amount_from_pacs.json", {params:{"name": politicianInfo.name}}).success(function (res) {
-                    debugger
                     $scope.info = [];
                     $scope.titles = [];
                     var data = res.data
