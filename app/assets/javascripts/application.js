@@ -19,12 +19,13 @@
 //= require angular-chart.js/dist/angular-chart.js
 //= require spin.js/spin.js
 //= require angular-spinner/angular-spinner.js
+//= require angucomplete-alt/angucomplete-alt.js
 //= require_tree .
 
 
 
 // TODO: try getting the more modular version of this to work
-var PoliticsApp = angular.module("PoliticsApp", ["chart.js", 'angularSpinner'])
+var PoliticsApp = angular.module("PoliticsApp", ["chart.js", 'angularSpinner', "angucomplete-alt"])
 .config(['ChartJsProvider', function (ChartJsProvider) {
 }]);
 
@@ -36,24 +37,25 @@ PoliticsApp.config(["$httpProvider", function ($httpProvider) {
 
 
 PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerService', function ($scope, $timeout, $http, usSpinnerService) {
-        $scope.politicianList = [
-        'John Mccain',
-        'Nancy Pelosi',
-        'Ted Cruz',
-        'Marco Rubio',
-        'Charles E. Schumer',
-        'Bernie Sanders',
-        'John Boehner',
-        'Matt Salmon',
-        'Rick Crawford',
-        'French Hill',
-        'Steve Womack',
-        'Barbara Lee',
-        'Ted Yoho',
-        'Pete King',
-        'Tim Murphy',
-        'Tom Rice'];
 
+    $scope.politicianList = [
+        {name:'John Mccain'},
+        {name:'Nancy Pelosi'},
+        {name: 'Ted Cruz'},
+        {name: 'Marco Rubio'},
+        {name:'Charles E. Schumer'},
+        {name:'Bernie Sanders'},
+        {name:'John Boehner'},
+        {name:'Matt Salmon'},
+        {name:'Rick Crawford'},
+        {name:'French Hill'},
+        {name:'Steve Womack'},
+        {name:'Barbara Lee'},
+        {name:'Ted Yoho'},
+        {name:'Pete King'},
+        {name:'Tim Murphy'},
+        {name:'Tom Rice'}
+        ];
 
 
     $scope.politicianData = {
@@ -76,10 +78,14 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                 usSpinnerService.spin('spinner-1');
 
             }
+
+        $scope.inputChanged = function(str) {
+              $scope.politicianData.name = str;
+            }
         
         $scope.getData = function() {
             var politicianInfo = {
-                    name: $scope.politicianData.name,
+                    name: $scope.politicianData.name.title,
                     electionCycle: $scope.politicianData.electionCycle,
                     limit: $scope.politicianData.limit
                    }
@@ -88,7 +94,6 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                    // if (politicianInfo.name.split(" ").length === 1 || politicianInfo.name === null) {
                    //  $("#myAlert").alert()
                    // }
-
             $scope.startSpin();
         //  // var electionCycle = "2014";
             $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res) {
