@@ -9,7 +9,7 @@ class PoliticiansController < ApplicationController
 		politician_name = params[:name] || 'john mccain'
 		politician_name.downcase!
 		cycle = params[:cycle] || '2014'
-		limit = params[:limit] || 20
+		limit = params[:limit] || 30
 
 		check_database(politician_name, cycle)
 		# top_contributors_hash = Contribution.joins(:contributor).group("contributors.name").group("transaction_id").where({politician_id: 1, cycle: 2014}).where.not({transaction_id: 'pac2pac'}).order('SUM(contributions.amount) DESC').limit(10).sum(:amount)
@@ -71,6 +71,34 @@ class PoliticiansController < ApplicationController
    		end
 	end
 
+	def contributions_by_gender
+		politician_name = params[:name] || 'john mccain'
+		politician_name.downcase!
+		cycle = params[:cycle] || '2014'
+		# gender = params[:gender] || 'M'
+		contributions_from_genders = []
+
+		@politician = Politician.find_by_name(politician_name)
+		contributions_from_women = Contribution.joins(:contributor)
+		.where({"contributors.contributor_gender" => 'F', politician_id: @politician.id, cycle: cycle})
+		.sum(:amount)
+
+
+		contributions_from_men = Contribution.joins(:contributor)
+		.where({"contributors.contributor_gender" => 'M', politician_id: @politician.id, cycle: cycle})
+		.sum(:amount)
+
+		contributions_from_genders << contributions_from_women
+		contributions_from_genders << contributions_from_men
+
+		respond_to do |f|
+ 		  f.json { render json: {data: contributions_from_genders}}
+ 		  f.html
+   	end
+
+
+	end
+
 	private
 
 	# Check if the politician being searched is already in the db
@@ -103,28 +131,25 @@ class PoliticiansController < ApplicationController
 
 	def add_contributors_and_contributions(politician_id, contributions)
 		time_entered = Time.now()
-		ActiveRecord::Base.transaction do
-
-		  contributions.each do |contribution|
-		  	if Contributor.find_by_name(contribution["contributor_name"]).nil?
-		  		if contribution["organization_ext_id"] == ""
-		  			name_key = "contributor_name"
-		  		else 
-		  			name_key = "organization_name"
-		  		end
-		  		contributor_info = {
-		  										name: contribution[name_key],
-		  										contributor_name: contribution["contributor_name"],
-		  										organization_name: contribution["organization_name"],
-		  										contributor_occupation: contribution["contributor_occupation"],
-		  										contributor_state: contribution["contributor_state"],
-		  										contributor_zipcode: contribution["contributor_zipcode"],
-		  										}
-		  		@contributor = Contributor.create(contributor_info)
-
-		  	end
-		  	add_contribution(politician_id, contribution)
-		  end
+		contributions.each do |contribution|
+			if Contributor.find_by_name(contribution["contributor_name"]).nil?
+				if contribution["organization_ext_id"] == ""
+					name_key = "contributor_name"
+				else 
+					name_key = "organization_name"
+				end
+				contributor_info = {
+												name: contribution[name_key],
+												contributor_name: contribution["contributor_name"],
+												organization_name: contribution["organization_name"],
+												contributor_occupation: contribution["contributor_occupation"],
+												contributor_state: contribution["contributor_state"],
+												contributor_zipcode: contribution["contributor_zipcode"],
+												contributor_gender: contribution["contributor_gender"]
+												}
+				@contributor = Contributor.create(contributor_info)
+			end
+			add_contribution(politician_id, contribution)
 		end
 		time_finished = Time.now()
 		p "start: #{time_entered}"

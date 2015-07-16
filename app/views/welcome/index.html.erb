@@ -6,27 +6,72 @@
 </head>
 <body>
 	<div id="page-header" class="page-header">
-	  <h1 class="app-name">Politics <!-- <small>Subtext for header</small> --></h1>
+	  <h1 class="app-name">Representation <!-- <small>Subtext for header</small> --></h1>
 	</div>
 	<div ng-app="PoliticsApp">
-		
+		<nav>
+
+			<ul class="nav nav-pills">
+			  <li role="presentation" class="active"><a href="#">Graph One</a></li>
+			  <li role="presentation"><a href="#">Graph Two</a></li>
+			  <li role="presentation"><a href="#">Graph Three</a></li>
+			</ul>
+		</nav>
 	    <div ng-controller="GraphCtrl">
 
 	    	
     		<form id="politician-search" class="input-group input-group-lg">
     			<input class="search-bar" type="text" placeholder="Candidates Full Name" ng-model="politicianData.name">
+    			<input class="cycle-input" type="integer" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
     	 		<input class="submit-button" type="submit" ng-click="getData()">
     		</form> <br>
 
+    		<span us-spinner="{radius:30, width:8, length: 16}"></span>
+
 	    	<canvas id="pie" class="chart chart-pie" data="data"
-	    	   labels="labels" legend="true" height="90"></canvas> 
+	    	   labels="labels" legend="true" height="105"></canvas> 
 	    	   <!-- This chart does not show up even when placed above previous chart -->
 	    	   <!-- how I am constructing it must be wrong -->
-    	   <canvas id="doughnut" class="chart chart-doughnut" data="info"
-    	   labels="titles" legend="true" height="90"></canvas> <br>
+    	   <canvas id="pie" class="chart chart-pie" data="info"
+    	   labels="titles" legend="true" height="105"></canvas> <br>
+
+    	   <canvas id="pie" class="chart chart-pie" data="gender_donation"
+    	   labels="gender_name" legend="true" height="105"></canvas> <br>
 	    	{{ allResults }} <br>
 	    		
 	    </div>
 	</div>
 </body>
 </html>
+
+
+	<!-- <div ng-app="PoliticsApp">
+
+		<div ng-controller="MainCtrl">
+			<nav>
+				<ul class="nav nav-pills">
+				  <li role="presentation" class="active"><a href="#">Home</a></li>
+				  <li role="presentation"><a href="#">Placeholder</a></li>
+				  <li role="presentation" ng-click="sendData()">Contributions from Pacs</li>
+				</ul>
+			</nav>
+			<form id="politician-search" class="input-group input-group-lg">
+    			<input class="search-bar" type="text" placeholder="Candidates Full Name" ng-model="politicianData.name">
+    	 		<input class="submit-button" type="submit" ng-click="getData()">
+    		</form> <br>
+		</div>
+
+	    <div ng-controller="ContribitionInfoCtrl">
+
+	    	<canvas id="pie" class="chart chart-pie" data="data"
+	    	   labels="labels" legend="true" height="90"></canvas> 
+	    	 
+	    		
+	    <!- </div>
+
+	    <div ng-controller="PacInfoCtrl">
+	    	<canvas id="doughnut" class="chart chart-doughnut" data="info"
+    	   labels="titles" legend="true" height="90"></canvas> <br>
+	    	{{ allResults }} <br>
+	    </div>
+	</div> --> 
