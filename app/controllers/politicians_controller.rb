@@ -9,7 +9,15 @@ class PoliticiansController < ApplicationController
 		politician_name = params[:name] || 'john mccain'
 		politician_name.downcase!
 		cycle = params[:cycle] || '2014'
-		limit = params[:limit] || 30
+		limit = params[:limit] || 30	
+
+		# if politician_name.split(" ").length == 1
+		# 	response = "Ple"
+		# 	respond_to do |f|
+		# 	  f.json { render json: {data: sorted}}
+		# 	  f.html
+		# 	end
+		# end
 
 		check_database(politician_name, cycle)
 		# top_contributors_hash = Contribution.joins(:contributor).group("contributors.name").group("transaction_id").where({politician_id: 1, cycle: 2014}).where.not({transaction_id: 'pac2pac'}).order('SUM(contributions.amount) DESC').limit(10).sum(:amount)
@@ -20,6 +28,7 @@ class PoliticiansController < ApplicationController
    		.joins(:contributor)
    		.group("contributors.name")
    		.where({politician_id: @politician.id, cycle: cycle})
+   		.where("amount > ?", 0)
    		.where.not({transaction_id: 'pac2pac'})
    		.order('SUM(contributions.amount) DESC')
    		.limit(limit)
@@ -36,6 +45,8 @@ class PoliticiansController < ApplicationController
 	def total_raised_in_cycle
 		politician_name = params[:name] || 'john mccain'
 		politician_name.downcase!
+
+
 		cycle = params[:cycle] || '2014'
 
 		check_database(politician_name, cycle)

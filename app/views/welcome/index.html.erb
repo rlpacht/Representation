@@ -19,11 +19,21 @@
 		</nav>
 	    <div ng-controller="GraphCtrl">
 
-	    	
+	    	<!-- <div id="myAlert" class="alert alert-danger alert-dismissable fade in" role="alert" style="display: none">
+	    		<button type="button" class="close" data-dismiss="alert" aria-lable="close">
+	    			<span aria-hidden="true">&times;</span>
+	    		</button>
+	    		<h4> Please input the politician's full name</h4>
+	    	</div> -->
     		<form id="politician-search" class="input-group input-group-lg">
     			<input class="search-bar" type="text" placeholder="Candidates Full Name" ng-model="politicianData.name">
-    			<input class="cycle-input" type="integer" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
+    			<input class="cycle-input" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
+    			<input class="limit-bar" type="number" placeholder="Number of 'Top' results" ng-model="politicianData.limit">
     	 		<input class="submit-button" type="submit" ng-click="getData()">
+    			<div ng-repeat="politician in politicianList | filter:politicianData.name">
+    			                {{ politician }}
+    			            </div>
+    			
     		</form> <br>
 
     		<span us-spinner spinner-key="spinner-1"></span>
