@@ -55,11 +55,16 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
             }
         
         $scope.getData = function() {
+            $scope.$on('destroy', function (event, chart) {
+                                
+                              console.log(chart);
+                            });
+
             var politicianInfo = {
                     name: $scope.politicianData.name,
                     electionCycle: $scope.politicianData.electionCycle
                    }
-            startSpin();
+            $scope.startSpin();
         //  // var electionCycle = "2014";
             $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle}}).success(function (res) {
                 debugger
@@ -134,7 +139,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                     var totalMinusGender = $scope.total - gender_total;
                     $scope.gender_name = $scope.gender_name.concat("Unspecified")
                     $scope.gender_donation = $scope.gender_donation.concat(totalMinusGender)
-                    stopSpin();
+                    $scope.stopSpin();
                 })
                 
                 $scope.$on('create', function (event, chart) {
