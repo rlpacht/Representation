@@ -39,23 +39,24 @@ PoliticsApp.config(["$httpProvider", function ($httpProvider) {
 PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerService', function ($scope, $timeout, $http, usSpinnerService) {
 
     $scope.politicianList = [
-        {name:'John Mccain'},
-        {name:'Nancy Pelosi'},
+        {name: 'John Mccain'},
+        {name: 'Nancy Pelosi'},
         {name: 'Ted Cruz'},
         {name: 'Marco Rubio'},
-        {name:'Charles E. Schumer'},
-        {name:'Bernie Sanders'},
-        {name:'John Boehner'},
-        {name:'Matt Salmon'},
-        {name:'Rick Crawford'},
-        {name:'French Hill'},
-        {name:'Steve Womack'},
-        {name:'Barbara Lee'},
-        {name:'Ted Yoho'},
-        {name:'Pete King'},
-        {name:'Tim Murphy'},
-        {name:'Tom Rice'},
-        {name: 'Richard Shelby'}
+        {name: 'Charles E. Schumer'},
+        {name: 'Bernie Sanders'},
+        {name: 'John Boehner'},
+        {name: 'Matt Salmon'},
+        {name: 'Rick Crawford'},
+        {name: 'French Hill'},
+        {name: 'Steve Womack'},
+        {name: 'Barbara Lee'},
+        {name: 'Ted Yoho'},
+        {name: 'Pete King'},
+        {name: 'Tim Murphy'},
+        {name: 'Tom Rice'},
+        {name: 'Richard Shelby'}.
+        {name: 'Rand Paul'}
         ];
 
 
