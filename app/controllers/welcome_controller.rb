@@ -1,5 +1,5 @@
 require 'net/http'
-require 'HTTParty'
+# require 'HTTParty'
 class WelcomeController < ApplicationController
 	include HTTParty
 	base_uri("http://transparencydata.com/api/1.0/contributions.json")
