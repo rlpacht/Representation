@@ -55,7 +55,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
         {name: 'Pete King'},
         {name: 'Tim Murphy'},
         {name: 'Tom Rice'},
-        {name: 'Richard Shelby'}.
+        {name: 'Richard Shelby'},
         {name: 'Rand Paul'}
         ];
 
