@@ -59,7 +59,8 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
         {name: 'Rand Paul'},
         {name: 'Barbara Boxer'},
         {name: 'Dianne Feinstein'},
-        {name: 'Lindsey Graham'}
+        {name: 'Lindsey Graham'},
+        {name: 'Hillary Clinton'}
         ];
 
 
