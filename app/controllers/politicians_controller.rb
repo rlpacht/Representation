@@ -105,7 +105,7 @@ class PoliticiansController < ApplicationController
 		respond_to do |f|
  		  f.json { render json: {data: contributions_from_genders}}
  		  f.html
-   	end
+   	end	
 
 
 	end

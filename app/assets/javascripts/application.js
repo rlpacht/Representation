@@ -102,7 +102,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
             $scope.startSpin();
         //  // var electionCycle = "2014";
             $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res, status) {
-                
+                $scope.searchedPolitician = $scope.politicianData.name.title;
                 if (status >= 300 || status < 200 || res.data.length === 0) {
                     $scope.errorMessage = "Uh oh. Something seems to have gone wrong."
                     debugger
