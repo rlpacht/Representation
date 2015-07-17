@@ -39,22 +39,24 @@ PoliticsApp.config(["$httpProvider", function ($httpProvider) {
 PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerService', function ($scope, $timeout, $http, usSpinnerService) {
 
     $scope.politicianList = [
-        {name:'John Mccain'},
-        {name:'Nancy Pelosi'},
+        {name: 'John Mccain'},
+        {name: 'Nancy Pelosi'},
         {name: 'Ted Cruz'},
         {name: 'Marco Rubio'},
-        {name:'Charles E. Schumer'},
-        {name:'Bernie Sanders'},
-        {name:'John Boehner'},
-        {name:'Matt Salmon'},
-        {name:'Rick Crawford'},
-        {name:'French Hill'},
-        {name:'Steve Womack'},
-        {name:'Barbara Lee'},
-        {name:'Ted Yoho'},
-        {name:'Pete King'},
-        {name:'Tim Murphy'},
-        {name:'Tom Rice'}
+        {name: 'Charles E. Schumer'},
+        {name: 'Bernie Sanders'},
+        {name: 'John Boehner'},
+        {name: 'Matt Salmon'},
+        {name: 'Rick Crawford'},
+        {name: 'French Hill'},
+        {name: 'Steve Womack'},
+        {name: 'Barbara Lee'},
+        {name: 'Ted Yoho'},
+        {name: 'Pete King'},
+        {name: 'Tim Murphy'},
+        {name: 'Tom Rice'},
+        {name: 'Richard Shelby'}.
+        {name: 'Rand Paul'}
         ];
 
 
@@ -72,6 +74,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
         $scope.title = null;
         $scope.gender_name = null;
         $scope.gender_donation = null;
+        $scope.errorMessage = null;
 
 
         $scope.startSpin = function(){
@@ -90,14 +93,18 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                     limit: $scope.politicianData.limit
                    }
 
-
                    // if (politicianInfo.name.split(" ").length === 1 || politicianInfo.name === null) {
                    //  $("#myAlert").alert()
                    // }
             $scope.startSpin();
         //  // var electionCycle = "2014";
-            $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res) {
-                debugger
+            $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res, status) {
+                
+                if (status >= 300 || status < 200 || res.data.length === 0) {
+                    $scope.errorMessage = "Uh oh. Something seems to have gone wrong."
+                    debugger
+                    return
+                }
                 $scope.data = [];
                 var resData = [];
                 $scope.labels = [];

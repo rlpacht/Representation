@@ -9,36 +9,32 @@
 	  <h1 class="app-name">Representation <!-- <small>Subtext for header</small> --></h1>
 	</div>
 	<div ng-app="PoliticsApp">
-		<nav>
+		<!-- <nav>
 
 			<ul class="nav nav-pills">
 			  <li role="presentation" class="active"><a href="#">Graph One</a></li>
 			  <li role="presentation"><a href="#">Graph Two</a></li>
 			  <li role="presentation"><a href="#">Graph Three</a></li>
 			</ul>
-		</nav>
+		</nav> -->
 	    <div ng-controller="GraphCtrl">
-
-	    	<!-- <div id="myAlert" class="alert alert-danger alert-dismissable fade in" role="alert" style="display: none">
-	    		<button type="button" class="close" data-dismiss="alert" aria-lable="close">
-	    			<span aria-hidden="true">&times;</span>
-	    		</button>
-	    		<h4> Please input the politician's full name</h4>
-	    	</div> -->
     		<form id="politician-search" class="input-group input-group-lg form-inline">
-    	<span angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="politicianList" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small form-inline" input-changed="inputChanged" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
-          </span>
     			<input class="cycle-input" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
     			<input class="limit-bar" type="number" placeholder="Number of 'Top' results" ng-model="politicianData.limit">
+		    	<span angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="politicianList" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small form-inline" input-changed="inputChanged" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
+		         </span>			
     	 		<input class="submit-button" type="submit" ng-click="getData()">
     		</form> <br>
+
+    		<!-- <div ng-messages="myForm.myField.$error" role="alert">
+    		    <div ng-message="required">Uh oh. It seems like something went wrong. Check that the politician was in office that year</div>
+    		  </div> -->
+
 
     		<span us-spinner spinner-key="spinner-1"></span>
 
 	    	<canvas id="pie" class="chart chart-pie" data="data"
 	    	   labels="labels" legend="true" height="105"></canvas> 
-	    	   <!-- This chart does not show up even when placed above previous chart -->
-	    	   <!-- how I am constructing it must be wrong -->
     	   <canvas id="pie" class="chart chart-pie" data="info"
     	   labels="titles" legend="true" height="105"></canvas> <br>
 
