@@ -5,6 +5,11 @@ class PoliticiansController < ApplicationController
 	base_uri("http://transparencydata.com/api/1.0/contributions.json")
 	
 	# Send all the contributions in your own db (creating them if needed)
+	
+	def index
+		render :index
+	end
+
 	def top_contributors
 		politician_name = params[:name] || 'john mccain'
 		politician_name.downcase!

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+</head>
+<body>
+	<div id="page-header" class="page-header">
+	  <h1 class="app-name">Representation <!-- <small>Subtext for header</small> --></h1>
+	</div>
+	<div ng-app="PoliticsApp">
+		<!-- <nav>
+
+			<ul class="nav nav-pills">
+			  <li role="presentation" class="active"><a href="#">Graph One</a></li>
+			  <li role="presentation"><a href="#">Graph Two</a></li>
+			  <li role="presentation"><a href="#">Graph Three</a></li>
+			</ul>
+		</nav> -->
+	    <div ng-controller="GraphCtrl">
+	    	<!-- Utilize the NY Times api for the autocomplete -->
+	    	<!-- will most likely need to do a call to my backend to make sure my key stays hidden-->
+	    
+    		<form id="politician-search" class="input-group input-group-lg form-inline">
+    			<input class="cycle-input" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
+    			<input class="limit-bar" type="number" placeholder="Number of 'Top' results" ng-model="politicianData.limit">
+		    	<span angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="politicianList" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small form-inline" input-changed="inputChanged" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
+		         </span>			
+    	 		<input class="submit-button" type="submit" ng-click="getData()">
+    		</form> <br>
+
+    		<!-- <div ng-messages="myForm.myField.$error" role="alert">
+    		    <div ng-message="required">Uh oh. It seems like something went wrong. Check that the politician was in office that year</div>
+    		  </div> -->
+
+    		  <h1 id="searched-politician"> {{searchedPolitician}} </h1> <br>
+    		<span us-spinner spinner-key="spinner-1"></span>
+
+	    	<canvas id="pie" class="chart chart-pie" data="data"
+	    	   labels="labels" legend="true" height="105"></canvas> 
+    	   <canvas id="pie" class="chart chart-pie" data="info"
+    	   labels="titles" legend="true" height="105"></canvas> <br>
+
+    	   <canvas id="pie" class="chart chart-pie" data="gender_donation"
+    	   labels="gender_name" legend="true" height="105"></canvas> <br>
+	    	<!-- {{ allResults }} --> <br>
+	    		
+	    </div>
+	</div>
+</body>
+</html>
+
+
+	<!-- <div ng-app="PoliticsApp">
+
+		<div ng-controller="MainCtrl">
+			<nav>
+				<ul class="nav nav-pills">
+				  <li role="presentation" class="active"><a href="#">Home</a></li>
+				  <li role="presentation"><a href="#">Placeholder</a></li>
+				  <li role="presentation" ng-click="sendData()">Contributions from Pacs</li>
+				</ul>
+			</nav>
+			<form id="politician-search" class="input-group input-group-lg">
+    			<input class="search-bar" type="text" placeholder="Candidates Full Name" ng-model="politicianData.name">
+    	 		<input class="submit-button" type="submit" ng-click="getData()">
+    		</form> <br>
+		</div>
+
+	    <div ng-controller="ContribitionInfoCtrl">
+
+	    	<canvas id="pie" class="chart chart-pie" data="data"
+	    	   labels="labels" legend="true" height="90"></canvas> 
+	    	 
+	    		
+	    <!- </div>
+
+	    <div ng-controller="PacInfoCtrl">
+	    	<canvas id="doughnut" class="chart chart-doughnut" data="info"
+    	   labels="titles" legend="true" height="90"></canvas> <br>
+	    	{{ allResults }} <br>
+	    </div>
+	</div> --> 

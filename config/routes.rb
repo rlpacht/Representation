@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   get "/data", to: "welcome#show_data"
 
+  get "/search", to: "politicians#index"
+
   get "/contributions", to: "politicians#top_contributors"
 
   get "/total", to: "politicians#total_raised_in_cycle"

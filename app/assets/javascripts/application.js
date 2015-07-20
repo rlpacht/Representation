@@ -37,6 +37,7 @@ PoliticsApp.config(["$httpProvider", function ($httpProvider) {
 
 
 PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerService', function ($scope, $timeout, $http, usSpinnerService) {
+    $scope.searchedPolitician = null;
 
     $scope.politicianList = [
         {name: 'John Mccain'},
@@ -81,6 +82,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
         $scope.errorMessage = null;
 
 
+
         $scope.startSpin = function(){
                 usSpinnerService.spin('spinner-1');
 
@@ -96,17 +98,16 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                     electionCycle: $scope.politicianData.electionCycle,
                     limit: $scope.politicianData.limit
                    }
-
+        $scope.searchedPolitician = $scope.politicianData.name.title;
                    // if (politicianInfo.name.split(" ").length === 1 || politicianInfo.name === null) {
                    //  $("#myAlert").alert()
                    // }
             $scope.startSpin();
         //  // var electionCycle = "2014";
             $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res, status) {
-                $scope.searchedPolitician = $scope.politicianData.name.title;
+                
                 if (status >= 300 || status < 200 || res.data.length === 0) {
                     $scope.errorMessage = "Uh oh. Something seems to have gone wrong."
-                    debugger
                     return
                 }
                 $scope.data = [];
