@@ -209,6 +209,7 @@ class PoliticiansController < ApplicationController
 
 		all_contributions = []
 		loop do 
+			puts "page #{query[:query][:page]}"
 			response = self.class.get("", query)
 			parsed_response = JSON.parse(response.body)
 			break if parsed_response.empty?

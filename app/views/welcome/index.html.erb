@@ -18,6 +18,9 @@
 			</ul>
 		</nav> -->
 	    <div ng-controller="GraphCtrl">
+	    	<!-- Utilize the NY Times api for the autocomplete -->
+	    	<!-- will most likely need to do a call to my backend to make sure my key stays hidden-->
+	    
     		<form id="politician-search" class="input-group input-group-lg form-inline">
     			<input class="cycle-input" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
     			<input class="limit-bar" type="number" placeholder="Number of 'Top' results" ng-model="politicianData.limit">

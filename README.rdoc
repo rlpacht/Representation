@@ -1,28 +1,19 @@
-== README
+Representation
+==============
+## Overview
+A visual representation of campaign finance data for United States politicians. The goal is to make this data as easily accessabile as possible.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Features
+Users can search for a politician and year. It then displays data gathered from the Sunlight Foundation API in graphs that make it easier to understand the data.
 
-Things you may want to cover:
+## Technologies Used
+Angular
+javascript
+Ruby on Rails
+Sunlight Foundation API
+Charts.js
+Spin.js
 
-* Ruby version
+## Future Todos
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+I would like to integrate more APIs that would cover different data, such as voting records and bills the politicians have sponsored.
