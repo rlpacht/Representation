@@ -1,12 +1,12 @@
 Representation
 ==============
-## Overview
+##Overview
 A visual representation of campaign finance data for United States politicians. The goal is to make this data as easily accessabile as possible.
 
-## Features
+##Features
 Users can search for a politician and year. It then displays data gathered from the Sunlight Foundation API in graphs that make it easier to understand the data.
 
-## Technologies Used
+##Technologies Used
 Angular
 javascript
 Ruby on Rails
@@ -14,6 +14,5 @@ Sunlight Foundation API
 Charts.js
 Spin.js
 
-## Future Todos
-
+##Future Todos
 I would like to integrate more APIs that would cover different data, such as voting records and bills the politicians have sponsored.
