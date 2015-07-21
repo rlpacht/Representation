@@ -41,6 +41,13 @@
  	   -webkit-text-stroke-color: white;
  }
 
+ .jumbo-small-text {
+ 	font-size: 20px;
+ 	webkit-text-fill-color: black; /* Will override color (regardless of order) */
+ 	   -webkit-text-stroke-width: 1px;
+ 	   -webkit-text-stroke-color: black;
+ }	
+
  .background {
  	/*background-image: url();*/
  	background: url('114th_US_Congress_House.png') no-repeat center center fixed; 

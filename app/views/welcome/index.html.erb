@@ -4,8 +4,8 @@
 	<title></title>
 
 </head>
-<body>
-	<div class="background">
+<body ng-app="PoliticsApp">
+	<div ng-controller="GraphCtrl" class="background">
 		<div id="page-header" class="page-header">
 		  <h1 class="app-name">Representation <!-- <small>Subtext for header</small> --></h1>
 		</div>
@@ -13,11 +13,36 @@
 		    <div class="jumbo-div">
 		    	<div class="jumbotron" style="text-align: center">
 		    	  <h1 class="jumbo-text">Representation</h1>
-		    	  <p>I'm not sure what will go here yet</p>
-		    	  <p><a class="btn btn-primary btn-lg" href="/search" role="button">Try it out!</a></p>
+		    	  <p class="jumbo-small-text">I'm not sure what will go here yet</p>
+		    	  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+		    	    Try it out!
+		    	  </button>
 		    	</div>
-		    		
 		    </div>
+
+		    <div class="modal fade" id="myModal">
+		      <div class="modal-dialog">
+		        <div class="modal-content">
+		          <div class="modal-header">
+		            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		            <h4 class="modal-title">Modal title</h4>
+		          </div>
+		          <form id="politician-search" class="input-group input-group-lg form-inline">
+		              			<input class="cycle-input" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
+		              			<input class="limit-bar" type="number" placeholder="Number of 'Top' results" ng-model="politicianData.limit">
+		          		    	<span angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="politicianList" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" input-changed="inputChanged" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
+		          		         </span>			
+		              	 		<!-- <input class="submit-button" type="submit" ng-click="getData()"> -->
+		              		</form>
+		          <div class="modal-footer">
+		            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		            <button type="button" class="btn btn-primary" ng-click="getData()">Submit</button>
+		          </div>
+		        </div><!-- /.modal-content -->
+		      </div><!-- /.modal-dialog -->
+		    </div><!-- /.modal -->
+
+
 		</div>
 		<div class="footer">
 			<div class="container">
