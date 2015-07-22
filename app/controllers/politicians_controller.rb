@@ -11,7 +11,7 @@ class PoliticiansController < ApplicationController
 	end
 
 	def top_contributors
-		politician_name = params[:name] || 'john mccain'
+		politician_name = params[:name]
 		politician_name.downcase!
 		cycle = params[:cycle] || '2014'
 		limit = params[:limit] || 30	
@@ -48,7 +48,7 @@ class PoliticiansController < ApplicationController
 	end 
 
 	def total_raised_in_cycle
-		politician_name = params[:name] || 'john mccain'
+		politician_name = params[:name]
 		politician_name.downcase!
 
 
@@ -69,7 +69,7 @@ class PoliticiansController < ApplicationController
 	end
 
 	def pac_money
-		politician_name = params[:name] || 'john mccain'
+		politician_name = params[:name]
 		politician_name.downcase!
 		cycle = params[:cycle] || '2014'
 
@@ -88,7 +88,7 @@ class PoliticiansController < ApplicationController
 	end
 
 	def contributions_by_gender
-		politician_name = params[:name] || 'john mccain'
+		politician_name = params[:name]
 		politician_name.downcase!
 		cycle = params[:cycle] || '2014'
 		# gender = params[:gender] || 'M'

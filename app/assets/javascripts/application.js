@@ -576,31 +576,6 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
       {"name":"John Barrasso"}
     ];
 
-    // $scope.politicianList = [
-    //     {name: 'John Mccain'},
-    //     {name: 'Nancy Pelosi'},
-    //     {name: 'Ted Cruz'},
-    //     {name: 'Marco Rubio'},
-    //     {name: 'Charles E. Schumer'},
-    //     {name: 'Bernie Sanders'},
-    //     {name: 'John Boehner'},
-    //     {name: 'Matt Salmon'},
-    //     {name: 'Rick Crawford'},
-    //     {name: 'French Hill'},
-    //     {name: 'Steve Womack'},
-    //     {name: 'Barbara Lee'},
-    //     {name: 'Ted Yoho'},
-    //     {name: 'Pete King'},
-    //     {name: 'Tim Murphy'},
-    //     {name: 'Tom Rice'},
-    //     {name: 'Richard Shelby'},
-    //     {name: 'Rand Paul'},
-    //     {name: 'Barbara Boxer'},
-    //     {name: 'Dianne Feinstein'},
-    //     {name: 'Lindsey Graham'},
-    //     {name: 'Hillary Clinton'}
-    //     ];
-
 
     $scope.politicianData = {
                                 "name" : null,
@@ -641,12 +616,12 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                    // }
             $scope.startSpin();
         //  // var electionCycle = "2014";
+            if (politicianInfo.name === undefined) {
+                $scope.errorMessage = "Uh oh. It seems that politician isn't in our data database."
+                usSpinnerService.stop('spinner-1');
+            }
+            debugger
             $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res, status) {
-                
-                if (status >= 300 || status < 200 || res.data.length === 0) {
-                    $scope.errorMessage = "Uh oh. Something seems to have gone wrong."
-                    return
-                }
                 $scope.data = [];
                 var resData = [];
                 $scope.labels = [];
@@ -659,9 +634,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                     resLabels = resLabels.concat(name);
                     resData = resData.concat(amount);
                 }
-                // .error(function (data) {
-                //     $().alert(data)
-                // })
+                
 
                 $scope.allResults = res.data
                 $http.get("/total.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res) {
@@ -733,7 +706,14 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                 }
 
                 
-            });
+            }).error(function (data, status) {
+                debugger
+                if (status >= 300 || status < 200 || status.length === 0) {
+                    $scope.errorMessage = "Uh oh. Something seems to have gone wrong."
+                    usSpinnerService.stop('spinner-1');
+                    $scope.searchedPolitician = null;
+                }
+            })
         }
 
 
