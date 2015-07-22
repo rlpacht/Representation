@@ -614,7 +614,8 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                    // if (politicianInfo.name.split(" ").length === 1 || politicianInfo.name === null) {
                    //  $("#myAlert").alert()
                    // }
-            $scope.startSpin();
+            // $http.get("/search")
+            
         //  // var electionCycle = "2014";
             if (politicianInfo.name === undefined) {
                 $scope.errorMessage = "Uh oh. It seems that politician isn't in our data database."
