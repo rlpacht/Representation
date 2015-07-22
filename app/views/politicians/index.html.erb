@@ -24,7 +24,7 @@
     		<form id="politician-search" class="input-group input-group-lg form-inline">
     			<input class="cycle-input" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
     			<input class="limit-bar" type="number" placeholder="Number of 'Top' results" ng-model="politicianData.limit">
-		    	<span angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="politicianList" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small form-inline" input-changed="inputChanged" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
+		    	<span angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="congress113" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small form-inline" input-changed="inputChanged" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
 		         </span>			
     	 		<input class="submit-button" type="submit" ng-click="getData()">
     		</form> <br>
