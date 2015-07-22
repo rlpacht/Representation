@@ -21,8 +21,47 @@
  	background: rgba(97, 44, 99, 0.9);
  	color: white;
  	padding: 25px 15px 15px;
-	margin: 0px
+	margin: 0px;
+	
 
+ }
+
+ .jumbo-div {
+ 	margin: 180px;
+ }
+
+ .jumbotron {
+ 	background:rgba(255, 255, 255, 0)
+ }
+
+ .jumbo-text {
+ 	color: black;
+ 	   -webkit-text-fill-color: black; /* Will override color (regardless of order) */
+ 	   -webkit-text-stroke-width: .8px;
+ 	   -webkit-text-stroke-color: white;
+ }
+
+ .jumbo-small-text {
+ 	font-size: 20px;
+ 	webkit-text-fill-color: black; /* Will override color (regardless of order) */
+ 	   -webkit-text-stroke-width: 1px;
+ 	   -webkit-text-stroke-color: black;
+ }	
+
+ .background {
+ 	/*background-image: url();*/
+ 	background: url('114th_US_Congress_House.png') no-repeat center center fixed; 
+ 	  -webkit-background-size: cover;
+ 	  -moz-background-size: cover;
+ 	  -o-background-size: cover;
+ 	  background-size: cover;
+ }
+
+ .footer {
+ 	background: rgba(97, 44, 99, 0.9);
+ 	color: white;
+ 	padding: 35px 15px 15px;
+	margin: 0px;
  }
 
  #politician-search {

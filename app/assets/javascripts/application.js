@@ -102,7 +102,8 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                    // if (politicianInfo.name.split(" ").length === 1 || politicianInfo.name === null) {
                    //  $("#myAlert").alert()
                    // }
-            $scope.startSpin();
+            // $http.get("/search")
+            
         //  // var electionCycle = "2014";
             $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res, status) {
                 
