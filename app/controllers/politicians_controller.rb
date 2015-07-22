@@ -91,7 +91,6 @@ class PoliticiansController < ApplicationController
 		politician_name = params[:name]
 		politician_name.downcase!
 		cycle = params[:cycle] || '2014'
-		# gender = params[:gender] || 'M'
 		contributions_from_genders = []
 
 		@politician = Politician.find_by_name(politician_name)

@@ -621,7 +621,6 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                 $scope.errorMessage = "Uh oh. It seems that politician isn't in our data database."
                 usSpinnerService.stop('spinner-1');
             }
-            debugger
             $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res, status) {
                 $scope.data = [];
                 var resData = [];
@@ -708,7 +707,6 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
 
                 
             }).error(function (data, status) {
-                debugger
                 if (status >= 300 || status < 200 || status.length === 0) {
                     $scope.errorMessage = "Uh oh. Something seems to have gone wrong."
                     usSpinnerService.stop('spinner-1');
