@@ -9,14 +9,6 @@
 	  <h1 class="app-name">Representation <!-- <small>Subtext for header</small> --></h1>
 	</div>
 	<div ng-app="PoliticsApp">
-		<!-- <nav>
-
-			<ul class="nav nav-pills">
-			  <li role="presentation" class="active"><a href="#">Graph One</a></li>
-			  <li role="presentation"><a href="#">Graph Two</a></li>
-			  <li role="presentation"><a href="#">Graph Three</a></li>
-			</ul>
-		</nav> -->
 	    <div ng-controller="GraphCtrl">
 	    	<!-- Utilize the NY Times api for the autocomplete -->
 	    	<!-- will most likely need to do a call to my backend to make sure my key stays hidden-->
@@ -24,7 +16,7 @@
     		<form id="politician-search" class="input-group input-group-lg form-inline">
     			<input class="cycle-input" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
     			<input class="limit-bar" type="number" placeholder="Number of 'Top' results" ng-model="politicianData.limit">
-		    	<span angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="politicianList" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small form-inline" input-changed="inputChanged" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
+		    	<span angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="congress113" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small form-inline" input-changed="inputChanged" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
 		         </span>			
     	 		<input class="submit-button" type="submit" ng-click="getData()">
     		</form> <br>
@@ -32,7 +24,7 @@
     		<!-- <div ng-messages="myForm.myField.$error" role="alert">
     		    <div ng-message="required">Uh oh. It seems like something went wrong. Check that the politician was in office that year</div>
     		  </div> -->
-
+    		  	<h3 class="error-message">{{errorMessage}}</h3>
     		  <h1 id="searched-politician"> {{searchedPolitician}} </h1> <br>
     		<span us-spinner spinner-key="spinner-1"></span>
 
