@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require bootstrap/dist/js/bootstrap.min.js
 //= require Chart
 //= require angular/angular
@@ -23,7 +22,7 @@
 //= require_tree .
 
 
-
+//turbo links has been removed
 // TODO: try getting the more modular version of this to work
 var PoliticsApp = angular.module("PoliticsApp", ["chart.js", 'angularSpinner', "angucomplete-alt"])
 .config(['ChartJsProvider', function (ChartJsProvider) {
@@ -708,114 +707,14 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                 
             }).error(function (data, status) {
                 if (status >= 300 || status < 200 || status.length === 0) {
-                    $scope.errorMessage = "Uh oh. Something seems to have gone wrong."
+                    $scope.errorMessage = "Uh oh. Something seems to have gone wrong on with the server."
                     usSpinnerService.stop('spinner-1');
                     $scope.searchedPolitician = null;
                 }
             })
         }
-
+        // debugger
 
     $timeout(function () {
     }, 500);
 }]);
-
-
-// PoliticsApp.controller('MainCtrl', function($scope) {
-//     $scope.politicianData = {
-//                 "name" : null
-//                 }
-            
-//     $scope.data = null;
-//     $scope.total = null;
-//     $scope.labels = null;
-//     $scope.pacs = null;
-//     $scope.info = null;
-//     $scope.title = null;
-//     $scope.getData = null;
-// })
-
-
-// PoliticsApp.controller('ContribitionInfoCtrl', ['$scope', '$timeout', '$http', function ($scope, $timeout, $http) {
-//     $scope.getData = function() {
-//         var politicianInfo = {
-//                 name: $scope.politicianData.name
-//                }
-//     //  // var electionCycle = "2014";
-//         $http.get("/contributions.json", {params:{"name": politicianInfo.name}}).success(function (res) {
-//             debugger
-//             $scope.data = [];
-//             $scope.labels = [];
-//             var data = res.data
-//             for (var i = 0; i < data.length; i++){
-//                 var name = data[i][0]
-//                 var amount = data[i][1]
-//                 console.log(name)
-//                 $scope.labels = $scope.labels.concat(name);
-//                 $scope.data = $scope.data.concat(amount);
-//             }
-
-//             $scope.allResults = res.data
-//             $http.get("/total.json", {params:{"name": politicianInfo.name}}).success(function (res) {
-//                 $scope.total = res.data.total
-//                 var totalMinusTopContributors = $scope.total;
-//                 for (var i = 0; i < $scope.data.length; i++) {
-//                     totalMinusTopContributors -= $scope.data[i]
-//                 }
-//                 $scope.labels = $scope.labels.concat("TOTAL")
-//                 $scope.data = $scope.data.concat(totalMinusTopContributors)
-        
-//             })
-            
-            
-//             $scope.$on('create', function (event, chart) {
-                
-//               console.log(chart);
-//             });
-
-            
-//         });
-//     }
-
-
-//     $timeout(function () {
-//     }, 500);
-// }]);
-
-
-// PoliticsApp.controller('PacInfoCtrl', ['$scope', '$timeout', '$http', function ($scope, $timeout, $http) {
-//     $scope.sendData = function() {
-//         $http.get("/amount_from_pacs.json", {params:{"name": politicianInfo.name}}).success(function (res) {
-//             debugger
-//             $scope.info = [];
-//             $scope.titles = [];
-//             var data = res.data
-//             for (var i = 0; i < data.length; i++){
-//                 var name = data[i][0]
-//                 var amount = data[i][1]
-//                 console.log(name)
-//                 $scope.titles = $scope.titles.concat(name);
-//                 $scope.info = $scope.info.concat(amount);
-//             }
-
-//             var totalMinusTopPacs = $scope.total;
-//             for (var i = 0; i < $scope.info.length; i++) {
-//                 totalMinusTopPacs -= $scope.info[i]
-//             }
-
-//             $scope.titles = $scope.titles.concat("TOTAL")
-//             $scope.titles = $scope.titles.concat($scope.labels)
-//             $scope.info = $scope.info.concat(totalMinusTopPacs)
-//             $scope.info = $scope.info.concat($scope.data)
-
-            // $scope.$on('create', function (event, chart) {
-            //   console.log(chart);
-            // });
-//         })  
-//     }
-    
-// }]);
-
-
-
-

@@ -12,56 +12,33 @@ class PoliticiansController < ApplicationController
 
 	def top_contributors
 		politician_name = params[:name]
-		politician_name.downcase!
+		politician_name = politician_name.downcase
 		cycle = params[:cycle] || '2014'
-		limit = params[:limit] || 30	
-
-		# if politician_name.split(" ").length == 1
-		# 	response = "Ple"
-		# 	respond_to do |f|
-		# 	  f.json { render json: {data: sorted}}
-		# 	  f.html
-		# 	end
-		# end
-
+		limit = params[:limit] || 30
 		check_database(politician_name, cycle)
 		# top_contributors_hash = Contribution.joins(:contributor).group("contributors.name").group("transaction_id").where({politician_id: 1, cycle: 2014}).where.not({transaction_id: 'pac2pac'}).order('SUM(contributions.amount) DESC').limit(10).sum(:amount)
 		# TODO: Move this into a helper, so it can be used independently
 		# of sending it as a response
 	  @politician = Politician.find_by_name(politician_name)
-   	top_contributors_hash = Contribution
-   		.joins(:contributor)
-   		.group("contributors.name")
-   		.where({politician_id: @politician.id, cycle: cycle})
-   		.where("amount > ?", 0)
-   		.where.not({transaction_id: 'pac2pac'})
-   		.order('SUM(contributions.amount) DESC')
-   		.limit(limit)
-   		.sum(:amount)
-   	sorted = top_contributors_hash.sort_by { |key, value| value }.reverse()
+	  sorted = @politician.top_contributors({cycle: cycle, limit: limit, id: @politician.id})
 
 
 		respond_to do |f|
 		  f.json { render json: {data: sorted}}
-		  f.html
+		  f.html	
 		end
 	end 
 
 	def total_raised_in_cycle
 		politician_name = params[:name]
-		politician_name.downcase!
-
-
+		politician_name = politician_name.downcase
 		cycle = params[:cycle] || '2014'
 
 		check_database(politician_name, cycle)
 
 		# TODO: Move this into a helper, so it can be used independently
 		# of sending it as a response
-		total = Contribution
-			.where({politician_id: @politician.id, cycle: cycle})
-			.sum(:amount)
-
+		total = @politician.total_from_cycle({cycle: cycle, id: @politician.id})
 		respond_to do |f|
 		  f.json { render json: {data: {total: total}}}
 		  f.html
@@ -70,17 +47,11 @@ class PoliticiansController < ApplicationController
 
 	def pac_money
 		politician_name = params[:name]
-		politician_name.downcase!
+		politician_name = politician_name.downcase
 		cycle = params[:cycle] || '2014'
 
 		@politician = Politician.find_by_name(politician_name)
-   	pacs = Contribution
-   		.joins(:contributor)
-   		.group("contributors.name")
-   		.where({politician_id: @politician.id, cycle: cycle, transaction_id: 'pac2pac'})
-   		.order('SUM(contributions.amount) DESC')
-   		.sum(:amount).sort()
-
+		pacs = @politician.money_from_pacs({cycle: cycle, id: @politician.id})
    		respond_to do |f|
    		  f.json { render json: {data: pacs}}
    		  f.html
@@ -89,22 +60,12 @@ class PoliticiansController < ApplicationController
 
 	def contributions_by_gender
 		politician_name = params[:name]
-		politician_name.downcase!
+		politician_name = politician_name.downcase
 		cycle = params[:cycle] || '2014'
 		contributions_from_genders = []
 
 		@politician = Politician.find_by_name(politician_name)
-		contributions_from_women = Contribution.joins(:contributor)
-		.where({"contributors.contributor_gender" => 'F', politician_id: @politician.id, cycle: cycle})
-		.sum(:amount)
-
-
-		contributions_from_men = Contribution.joins(:contributor)
-		.where({"contributors.contributor_gender" => 'M', politician_id: @politician.id, cycle: cycle})
-		.sum(:amount)
-
-		contributions_from_genders << contributions_from_women
-		contributions_from_genders << contributions_from_men
+		contributions_from_genders = @politician.gender_contributions({cycle: cycle, id: @politician.id})
 
 		respond_to do |f|
  		  f.json { render json: {data: contributions_from_genders}}
@@ -154,14 +115,14 @@ class PoliticiansController < ApplicationController
 					name_key = "organization_name"
 				end
 				contributor_info = {
-												name: contribution[name_key],
-												contributor_name: contribution["contributor_name"],
-												organization_name: contribution["organization_name"],
-												contributor_occupation: contribution["contributor_occupation"],
-												contributor_state: contribution["contributor_state"],
-												contributor_zipcode: contribution["contributor_zipcode"],
-												contributor_gender: contribution["contributor_gender"]
-												}
+									name: contribution[name_key],
+									contributor_name: contribution["contributor_name"],
+									organization_name: contribution["organization_name"],
+									contributor_occupation: contribution["contributor_occupation"],
+									contributor_state: contribution["contributor_state"],
+									contributor_zipcode: contribution["contributor_zipcode"],
+									contributor_gender: contribution["contributor_gender"]
+									}
 				@contributor = Contributor.create(contributor_info)
 			end
 			add_contribution(politician_id, contribution)
@@ -175,16 +136,16 @@ class PoliticiansController < ApplicationController
 		contributor = Contributor.find_by({name: contribution["contributor_name"]})
 			# TODO: Store and parse the transaction_id as well
 			contribution_info = {
-											# TODO: Parse amount as float. Needs a migration to change the column type
-											amount: contribution["amount"].to_f,
-											cycle: contribution["cycle"],
-											transaction_type: contribution["transaction_type"],
-											committee_name: contribution["committee_name"],
-											committee_ext_id: contribution["committee_ext_id"],
-											politician_id: politician_id,
-											contributor_id: contributor.id,
-											transaction_id: parse_transaction_id(contribution["transaction_id"]),
-											}
+						# TODO: Parse amount as float. Needs a migration to change the column type
+						amount: contribution["amount"].to_f,
+						cycle: contribution["cycle"],
+						transaction_type: contribution["transaction_type"],
+						committee_name: contribution["committee_name"],
+						committee_ext_id: contribution["committee_ext_id"],
+						politician_id: politician_id,
+						contributor_id: contributor.id,
+						transaction_id: parse_transaction_id(contribution["transaction_id"]),
+						}
 			@contribution = Contribution.create(contribution_info)
 	end
 

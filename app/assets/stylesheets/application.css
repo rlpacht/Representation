@@ -22,8 +22,6 @@
  	color: white;
  	padding: 25px 15px 15px;
 	margin: 0px;
-	
-
  }
 
  .jumbo-div {
@@ -51,6 +49,7 @@
  .background {
  	/*background-image: url();*/
  	background: url('Congress.jpg') no-repeat center center fixed; 
+ 	/*height: 100%;*/
  	  -webkit-background-size: cover;
  	  -moz-background-size: cover;
  	  -o-background-size: cover;
@@ -60,8 +59,10 @@
  .footer {
  	background: rgba(97, 44, 99, 0.9);
  	color: white;
- 	padding: 35px 15px 15px;
+ 	/*padding: 35px 15px 15px;	*/
+ 	padding-top: 35px;
 	margin: 0px;
+	position: relative;
  }
 
  #politician-search {
