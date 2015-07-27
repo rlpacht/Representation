@@ -541,7 +541,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
       {"name": "Richard Burr"},
       {"name":"Thom Tillis"},
       {"name":"John Hoeven"},
-      {"name":"hrHeidi Heitkamp"},
+      {"name":"Heidi Heitkamp"},
       {"name":"Sherrod Brown"},
       {"name":"Rob Portman"},
       {"name":"Jim Inhofe"},
