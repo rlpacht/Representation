@@ -2190,10 +2190,10 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
     };
             
     $scope.topContributionAmounts = [];
-    $scope.topContributionname = [];
+    $scope.topContributionNames = [];
     $scope.total = null;
     $scope.pacContributionAmounts = [];
-    $scope.pacContributionname = [];
+    $scope.pacContributionNames = [];
     $scope.errorMessage = null;
     $scope.hasError = false;
     $scope.isLoading = false;
@@ -2229,13 +2229,13 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
         $scope.startSpin();
         $http.get("/contributions.json", {params: politicianInfo}).success(function (res, status) {
             var topContributionAmounts = [];
-            var topContributionname = [];
+            var topContributionNames = [];
             var topContributions = res.data;
             var totalFromTopContributors = 0;
             topContributions.forEach(function(contribution){
                 var contributorName = contribution[0];
                 var amount = contribution[1];
-                topContributionname.push(contributorName);
+                topContributionNames.push(contributorName);
                 topContributionAmounts.push(amount);
                 totalFromTopContributors += amount;
             });
@@ -2246,9 +2246,9 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
             $http.get("/total.json", {params: politicianInfo}).success(function (res) {
                 $scope.total = res.data.total;
                 var totalMinusTopContributors = $scope.total - $scope.totalFromTopContributors;
-                topContributionname.push("Remainder")
+                topContributionNames.push("Remainder")
                 topContributionAmounts.push(totalMinusTopContributors);
-                $scope.topContributionname = topContributionname;
+                $scope.topContributionNames = topContributionNames;
                 $scope.topContributionAmounts = topContributionAmounts;
             });
 
@@ -2260,7 +2260,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                 pacContributions.forEach(function(contribution) {
                     var name = contribution[0];
                     var amount = contribution[1];
-                    $scope.pacContributionname.push(name);
+                    $scope.pacContributionNames.push(name);
                     $scope.pacContributionAmounts.push(amount);
                 });
 
@@ -2269,11 +2269,11 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                     totalMinusTopPacs -= $scope.pacContributionAmounts[i];
                 }
 
-                // $scope.pacContributionname = $scope.pacContributionname.concat(topContributionname);
+                // $scope.pacContributionNames = $scope.pacContributionNames.concat(topContributionNames);
                 
                 // $scope.pacContributionAmounts = $scope.pacContributionAmounts.concat(topContributionAmounts);
                 $scope.pacContributionAmounts.push(totalMinusTopPacs);
-                $scope.pacContributionname.push("Remainder")
+                $scope.pacContributionNames.push("Remainder")
                 $scope.stopSpin();
             });
             
