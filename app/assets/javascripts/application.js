@@ -19,6 +19,7 @@
 //= require spin.js/spin.js
 //= require angular-spinner/angular-spinner.js
 //= require angucomplete-alt/angucomplete-alt.js
+//= require angular-filter/dist/angular-filter.js
 //= require_tree .
 
 
@@ -38,7 +39,7 @@ PoliticsApp.config(["$httpProvider", function ($httpProvider) {
 PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerService', function ($scope, $timeout, $http, usSpinnerService) {
     $scope.searchedPolitician = null;
 
-    $scope.congress113 = [
+    $scope.congressMembers = [
       {"name": "John Conyers"},
       {"name": "Charles Rangel"},
       {"name": "Don Young"},
@@ -521,7 +522,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
       {"name": "Al Franken"},
       {"name": "Thad Cochran"},
       {"name": "Roger Wicker"},
-      {"name":"hreaire McCaskill"},
+      {"name":"Claire McCaskill"},
       {"name": "Roy Blunt"},
       {"name": "Jon Tester"},
       {"name": "Steve Daines"},
@@ -535,7 +536,7 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
       {"name":"Cory Booker"},
       {"name":"Tom Udall"},
       {"name":"Martin Heinrich"},
-      {"name": "Charles E. Schumer"},
+      {"name": "Charles Schumer"},
       {"name":"Kirsten Gillibrand"},
       {"name": "Richard Burr"},
       {"name":"Thom Tillis"},
@@ -572,148 +573,114 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
       {"name":"Ron Johnson"},
       {"name":"Tammy Baldwin"},
       {"name":"Mike Enzi"},
+      {"name": "John McCain"},
       {"name":"John Barrasso"}
     ];
 
 
     $scope.politicianData = {
-                                "name" : null,
-                                "electionCycle" : null,
-                                "limit": null
-                                }
+        name: null,
+        electionCycle: "2014",
+        limit: null
+    };
             
-        $scope.data = null;
-        $scope.total = null;
-        $scope.labels = null;
-        $scope.pacs = null;
-        $scope.info = null;
-        $scope.title = null;
-        $scope.gender_name = null;
-        $scope.gender_donation = null;
-        $scope.errorMessage = null;
+    $scope.topContributionAmounts = [];
+    $scope.topContributionNames = [];
+    $scope.total = null;
+    $scope.pacContributionAmounts = [];
+    $scope.pacContributionNames = [];
+    $scope.errorMessage = null;
+    $scope.hasError = false;
+    $scope.isLoading = false;
 
+    $scope.startSpin = function(){
+        $scope.isLoading = true; 
+        usSpinnerService.spin('spinner-1');
+    };
 
+    $scope.stopSpin = function(){
+        $scope.isLoading = false; 
+        usSpinnerService.stop('spinner-1');
+    };
 
-        $scope.startSpin = function(){
-                usSpinnerService.spin('spinner-1');
+    $scope.disableSubmit = function() {
+        var name = $scope.politicianData.name;
+        return name == null || name.length === 0;
+    };
 
-            }
-
-        $scope.inputChanged = function(str) {
-              $scope.politicianData.name = str;
-            }
-        
-        $scope.getData = function() {
-            var politicianInfo = {
-                    name: $scope.politicianData.name.title,
-                    electionCycle: $scope.politicianData.electionCycle,
-                    limit: $scope.politicianData.limit
-                   }
-        $scope.searchedPolitician = $scope.politicianData.name.title;
-                   // if (politicianInfo.name.split(" ").length === 1 || politicianInfo.name === null) {
-                   //  $("#myAlert").alert()
-                   // }
-            // $http.get("/search")
+    $scope.displayCharts = function() {
+        return !$scope.isLoading && !$scope.hasError;
+    };
+    
+    $scope.getData = function() {
+        $scope.hasError = false;
+        var politicianInfo = {
+            name: $scope.politicianData.name.title,
+            cycle: $scope.politicianData.electionCycle,
+            limit: $scope.politicianData.limit
+        };
+        $scope.searchedPolitician = politicianInfo.name;
+               
+        $scope.startSpin();
+        $http.get("/contributions.json", {params: politicianInfo}).success(function (res, status) {
+            var topContributionAmounts = [];
+            var topContributionNames = [];
+            var topContributions = res.data;
+            var totalFromTopContributors = 0;
+            topContributions.forEach(function(contribution){
+                var contributorName = contribution[0];
+                var amount = contribution[1];
+                topContributionNames.push(contributorName);
+                topContributionAmounts.push(amount);
+                totalFromTopContributors += amount;
+            });
+            $scope.totalFromTopContributors = totalFromTopContributors;
             
-        //  // var electionCycle = "2014";
-            if (politicianInfo.name === undefined) {
-                $scope.errorMessage = "Uh oh. It seems that politician isn't in our data database."
-                usSpinnerService.stop('spinner-1');
-            }
-            $http.get("/contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res, status) {
-                $scope.data = [];
-                var resData = [];
-                $scope.labels = [];
-                var resLabels = [];
-                var data = res.data
-                for (var i = 0; i < data.length; i++){
-                    var name = data[i][0]
-                    var amount = data[i][1]
-                    console.log(name)
-                    resLabels = resLabels.concat(name);
-                    resData = resData.concat(amount);
-                }
-                
+            $scope.firstChartDescription = "Amount Donated by Top Thirty Contributors";
+            $scope.secondChartDescription = "Contrubutions from PACs vs All Other Contributors"
+            $http.get("/total.json", {params: politicianInfo}).success(function (res) {
+                $scope.total = res.data.total;
+                var totalMinusTopContributors = $scope.total - $scope.totalFromTopContributors;
+                topContributionNames.push("Remainder")
+                topContributionAmounts.push(totalMinusTopContributors);
+                $scope.topContributionNames = topContributionNames;
+                $scope.topContributionAmounts = topContributionAmounts;
+            });
 
-                $scope.allResults = res.data
-                $http.get("/total.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res) {
-                    $scope.total = res.data.total
-                    var totalMinusTopContributors = $scope.total;
-                    for (var i = 0; i < resData.length; i++) {
-                        totalMinusTopContributors -= resData[i]
-                    }
-                    $scope.labels = resLabels.concat("Remainder")
-                    $scope.data = resData.concat(totalMinusTopContributors)
-            
-                })
-
-                // This method displays two totals because I am adding it twice
-                // once after subtracting pac contributions
-                // and again when I concat $scope.data because it already contains a total
-                $http.get("/amount_from_pacs.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res) {
-                    $scope.info = [];
-                    $scope.titles = [];
-                    var data = res.data
-                    for (var i = 0; i < data.length; i++){
-                        var name = data[i][0]
-                        var amount = data[i][1]
-                        console.log(name)
-                        $scope.titles = $scope.titles.concat(name);
-                        $scope.info = $scope.info.concat(amount);
-                    }
-
-                    var totalMinusTopPacs = $scope.total;
-                    for (var i = 0; i < $scope.info.length; i++) {
-                        totalMinusTopPacs -= $scope.info[i]
-                    }
-
-                    $scope.titles = $scope.titles.concat("Remainder")
-                    $scope.titles = $scope.titles.concat(resLabels)
-                    $scope.info = $scope.info.concat(totalMinusTopPacs)
-                    $scope.info = $scope.info.concat(resData)
-
-                })
-
-                $http.get("/gender_contributions.json", {params:{"name": politicianInfo.name, "cycle": politicianInfo.electionCycle, "limit": politicianInfo.limit}}).success(function (res) {
-                    var data = res.data;
-                    $scope.gender_donation = [];
-                    $scope.gender_name = [];
-                    var data = res.data
-                    var gender_total = 0;
-                    for (var i = 0; i < data.length; i++){
-                        $scope.gender_donation = $scope.gender_donation.concat(data[i]);
-                        gender_total += data[i]
-                    }
-                    $scope.gender_name = $scope.gender_name.concat("Women");        
-                    $scope.gender_name = $scope.gender_name.concat("Men");
-                    
-                    
-
-                    var totalMinusGender = $scope.total - gender_total;
-                    $scope.gender_name = $scope.gender_name.concat("Unspecified")
-                    $scope.gender_donation = $scope.gender_donation.concat(totalMinusGender)
-                    $scope.stopSpin();
-                })
-                
-                $scope.$on('create', function (event, chart) {
-                    
-                  console.log(chart);
+            // This method displays two totals because I am adding it twice
+            // once after subtracting pac contributions
+            // and again when I concat $scope.topContributionAmounts because it already contains a total
+            $http.get("/amount_from_pacs.json", {params: politicianInfo}).success(function (res) {
+                var pacContributions = res.data;
+                pacContributions.forEach(function(contribution) {
+                    var name = contribution[0];
+                    var amount = contribution[1];
+                    $scope.pacContributionNames.push(name);
+                    $scope.pacContributionAmounts.push(amount);
                 });
 
-                $scope.stopSpin = function(){
-                    usSpinnerService.stop('spinner-1');
+                var totalMinusTopPacs = $scope.total;
+                for (var i = 0; i < $scope.pacContributionAmounts.length; i++) {
+                    totalMinusTopPacs -= $scope.pacContributionAmounts[i];
                 }
 
+                $scope.pacContributionNames = $scope.pacContributionNames.concat(topContributionNames);
                 
-            }).error(function (data, status) {
-                if (status >= 300 || status < 200 || status.length === 0) {
-                    $scope.errorMessage = "Uh oh. Something seems to have gone wrong on with the server."
-                    usSpinnerService.stop('spinner-1');
-                    $scope.searchedPolitician = null;
-                }
-            })
-        }
-        // debugger
+                $scope.pacContributionAmounts = $scope.pacContributionAmounts.concat(topContributionAmounts);
+                $scope.pacContributionAmounts.push(totalMinusTopPacs);
+                $scope.stopSpin();
+            });
+            
+        }).error(function (data, status) {
+            console.log(status)
+            $scope.hasError = true;
+            if (status >= 300 || status < 200 || status.length === 0) {
+                $scope.errorMessage = "Uh oh. Something seems to have gone wrong on with the server."
+                $scope.stopSpin();
+                $scope.searchedPolitician = null;
+            }
+        });
+    }
 
     $timeout(function () {
     }, 500);

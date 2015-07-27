@@ -19,9 +19,8 @@ class PoliticiansController < ApplicationController
 		# top_contributors_hash = Contribution.joins(:contributor).group("contributors.name").group("transaction_id").where({politician_id: 1, cycle: 2014}).where.not({transaction_id: 'pac2pac'}).order('SUM(contributions.amount) DESC').limit(10).sum(:amount)
 		# TODO: Move this into a helper, so it can be used independently
 		# of sending it as a response
-	  @politician = Politician.find_by_name(politician_name)
-	  sorted = @politician.top_contributors({cycle: cycle, limit: limit, id: @politician.id})
-
+		@politician = Politician.find_by_name(politician_name)
+		sorted = @politician.top_contributors({cycle: cycle, limit: limit, id: @politician.id})
 
 		respond_to do |f|
 		  f.json { render json: {data: sorted}}
@@ -87,11 +86,11 @@ class PoliticiansController < ApplicationController
 			# Each contribution in the API contains information about the 
 			# receiving politician
 			politician_info = {
-											name: parse_name(@contributions[0]["recipient_name"]),
-											recipient_ext_id: @contributions[0]["recipient_ext_id"],
-											state: @contributions[0]["recipient_state_held"],
-											party: @contributions[0]["recipient_party"]
-											}
+				name: parse_name(politician_name),
+				recipient_ext_id: @contributions[0]["recipient_ext_id"],
+				state: @contributions[0]["recipient_state_held"],
+				party: @contributions[0]["recipient_party"]
+			}
 			@politician = Politician.create(politician_info)
 			add_contributors_and_contributions(@politician.id, @contributions)
 
@@ -106,7 +105,6 @@ class PoliticiansController < ApplicationController
 	end
 
 	def add_contributors_and_contributions(politician_id, contributions)
-		time_entered = Time.now()
 		contributions.each do |contribution|
 			if Contributor.find_by_name(contribution["contributor_name"]).nil?
 				if contribution["organization_ext_id"] == ""
@@ -115,21 +113,18 @@ class PoliticiansController < ApplicationController
 					name_key = "organization_name"
 				end
 				contributor_info = {
-									name: contribution[name_key],
-									contributor_name: contribution["contributor_name"],
-									organization_name: contribution["organization_name"],
-									contributor_occupation: contribution["contributor_occupation"],
-									contributor_state: contribution["contributor_state"],
-									contributor_zipcode: contribution["contributor_zipcode"],
-									contributor_gender: contribution["contributor_gender"]
-									}
+					name: contribution[name_key],
+					contributor_name: contribution["contributor_name"],
+					organization_name: contribution["organization_name"],
+					contributor_occupation: contribution["contributor_occupation"],
+					contributor_state: contribution["contributor_state"],
+					contributor_zipcode: contribution["contributor_zipcode"],
+					contributor_gender: contribution["contributor_gender"]
+				}
 				@contributor = Contributor.create(contributor_info)
 			end
 			add_contribution(politician_id, contribution)
 		end
-		time_finished = Time.now()
-		p "start: #{time_entered}"
-		p "end: #{time_finished}"
 	end
 
 	def add_contribution(politician_id, contribution)

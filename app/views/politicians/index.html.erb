@@ -10,32 +10,72 @@
 	</div>
 	<div ng-app="PoliticsApp">
 	    <div ng-controller="GraphCtrl">
-    		<form id="politician-search" class="input-group input-group-lg form-inline">
-    			<input class="cycle-input form-control-small form-inline" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle">
-    			<span>
-    					<angucomplete-alt id="ex1" placeholder="Candidates Full Name" maxlength="50" pause="100" selected-object="politicianData.name" local-data="congress113" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small form-inline" input-changed="inputChanged" text-no-results="Not Found" ng-class="{'angucomplete-dropdown-visible': showDropdown}"/>
-    			</span><br>
-    	 		<input class="submit-button" type="submit" ng-click="getData()">
-    		</form> <br>
+    		<form id="politician-search" class="form-inline">
+    			<!-- <input class="cycle-input form-control-small form-inline" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle"> -->
+    			<select class="cycle-input form-control" ng-model="politicianData.electionCycle">
+    			  <option value=2014 selected>2014</option>
+    			  <option value=2012>2012</option>
+    			  <option value=2010>2010</option>
+    			  <option value=2008>2008</option>
+    			</select> 
 
-    		  	<h3 class="error-message" ng-cloak>{{errorMessage}}</h3>
-    		  <h1 id="searched-politician" ng-cloak> {{searchedPolitician}} </h1> <br>
+    			<span 
+    				class="angucomplete-holder" 
+    				ng-class="{'angucomplete-dropdown-visible': showDropdown}">
+					<angucomplete-alt 
+						id="ex1"
+						placeholder="Candidates Full Name"
+						maxlength="50" 
+						selected-object="politicianData.name"
+						local-data="congressMembers"
+						search-fields="name"
+						title-field="name"
+						minlength="1"
+						input-class="form-control form-control-small form-inline politician-search-field" 
+						 
+					/>
+    			</span>
+    	 		<input 
+    	 			class="submit-button btn btn-primary"
+    	 			type="submit"
+    	 			ng-click="getData()"
+    	 			ng-disabled="disableSubmit()">
+    		</form> 
+
     		<span us-spinner spinner-key="spinner-1"></span>
 
-	    	<canvas id="pie" class="chart chart-pie" data="data"
-	    	   labels="labels" legend="true" height="105"></canvas> 
-    	   <canvas id="pie" class="chart chart-pie" data="info"
-    	   labels="titles" legend="true" height="105"></canvas> <br>
+    		<h1 id="searched-politician">
+    			{{searchedPolitician}}
+    		</h1>
 
-    	   <canvas id="pie" class="chart chart-pie" data="gender_donation"
-    	   labels="gender_name" legend="true" height="105"></canvas> <br>
+    		<h3 class="error-message" ng-show="hasError"> 
+    			{{errorMessage}}
+    		</h3>
+    		<!-- Use ng-if, because ng-hide interferes with the chart rendering -->
+    		<div class="result-charts" ng-if="displayCharts()">
 	    		
+	    		<h4 class="chart-descriptions"> {{firstChartDescription}} </h4>
+		    	<canvas 
+		    		id="pie" 
+		    		class="chart chart-pie" 
+		    		data="topContributionAmounts"
+		    		labels="topContributionNames" 
+		    		legend="true" 
+		    		animateRotate="false"
+		    		height="105">
+		    	</canvas> 
+		    
+		    	<h4 class="chart-descriptions"> {{secondChartDescription}} </h4>
+	    	   	<canvas 
+	    	   		id="pie" 
+	    	   		class="chart chart-pie" 
+	    	   		data="pacContributionAmounts"
+	    	   		labels="pacContributionNames" 
+	    	   		legend="true"
+	    	   		height="105">
+	    	   	</canvas> 
+		    </div>
 	    </div>
-	    <div class="footer">
-			<div class="container">
-				<p>content</p>
-			</div>
-		</div>
 	</div>
 </body>
 </html>

@@ -31,11 +31,11 @@ class Contribution < ActiveRecord::Base
 		politician_id = options[:politician_id]
 
     	pacs = Contribution
-   		.joins(:contributor)
-   		.group("contributors.name")
-   		.where({politician_id: politician_id, cycle: cycle, transaction_id: 'pac2pac'})
-   		.order('SUM(contributions.amount) DESC')
-   		.sum(:amount).sort()
+	   		.joins(:contributor)
+	   		.group("contributors.name")
+	   		.where({politician_id: politician_id, cycle: cycle, transaction_id: 'pac2pac'})
+	   		.order('SUM(contributions.amount) DESC')
+	   		.sum(:amount).sort()
    		return pacs
     end
 

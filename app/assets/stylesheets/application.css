@@ -13,9 +13,27 @@
  *= require welcome
  *= require bootstrap/dist/css/bootstrap.min
  *= require angular-chart.js/dist/angular-chart.css
+ *= require angucomplete-alt/angucomplete-alt.css
  *= require_self
  */
 
+ .angucomplete-dropdown {
+ 	overflow-y: auto;
+    max-height: 200px;
+ }
+
+/* .angucomplete-holder {
+    display: inline;
+}*/
+
+ .title-block {
+ 	margin: 10%;
+ 	font-size: %;
+ }
+
+ .title, .sub-title {
+ 	color: white;
+ }
 
  #page-header {
  	background: rgba(97, 44, 99, 0.9);
@@ -24,50 +42,27 @@
 	margin: 0px;
  }
 
- .jumbo-div {
- 	margin: 180px;
- }
-
- .jumbotron {
- 	background:rgba(255, 255, 255, 0)
- }
-
- .jumbo-text {
- 	color: black;
- 	   -webkit-text-fill-color: black; /* Will override color (regardless of order) */
- 	   -webkit-text-stroke-width: .8px;
- 	   -webkit-text-stroke-color: white;
- }
-
- .jumbo-small-text {
- 	font-size: 20px;
- 	webkit-text-fill-color: black; /* Will override color (regardless of order) */
- 	   -webkit-text-stroke-width: 1px;
- 	   -webkit-text-stroke-color: black;
- }	
-
  .background {
- 	/*background-image: url();*/
- 	background: url('Congress.jpg') no-repeat center center fixed; 
- 	/*height: 100%;*/
- 	  -webkit-background-size: cover;
- 	  -moz-background-size: cover;
- 	  -o-background-size: cover;
- 	  background-size: cover;
- }
-
- .footer {
- 	background: rgba(97, 44, 99, 0.9);
- 	color: white;
- 	/*padding: 35px 15px 15px;	*/
- 	padding-top: 35px;
-	margin: 0px;
-	position: relative;
+ 	background-image: url('Congress.jpg');
+ 	background-repeat: no-repeat;
+ 	background-size: cover;
+ 	background-position: center;
+ 	z-index: -1;
+ 	position: absolute;
+ 	top: 0;
+ 	bottom: 0;
+ 	left: 0;
+ 	right: 0;
  }
 
  #politician-search {
- 	margin: 0px auto;
+ 	position: relative;
+ 	left: 40%;
  	padding-top: 10px;
+ }
+
+ .politician-search-field, .cycle-input, .submit-button {
+ 	margin: 5px;
  }
 
  .search-bar {
@@ -80,25 +75,6 @@
     margin-top: 10px;
 }
 
- .cycle-input {
- 	/*margin-left: 10px;
- 	padding-left: 5px;*/
- }
-
- .limit-bar {
- 	/*margin-left: 10px;
- 	padding-left: 5px;*/
- }
-
- #searched-politician {
+ #searched-politician, .submit-button, .error-message, .chart-descriptions, .title-block {
  	text-align: center;
  }
-
- .submit-button {
- 	text-align: center;
- }
-
-.error-message {
-	text-align: center;
-}
-
