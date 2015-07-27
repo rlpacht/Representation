@@ -664,10 +664,11 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                     totalMinusTopPacs -= $scope.pacContributionAmounts[i];
                 }
 
-                $scope.pacContributionNames = $scope.pacContributionNames.concat(topContributionNames);
+                // $scope.pacContributionNames = $scope.pacContributionNames.concat(topContributionNames);
                 
-                $scope.pacContributionAmounts = $scope.pacContributionAmounts.concat(topContributionAmounts);
+                // $scope.pacContributionAmounts = $scope.pacContributionAmounts.concat(topContributionAmounts);
                 $scope.pacContributionAmounts.push(totalMinusTopPacs);
+                $scope.pacContributionNames.push("Remainder")
                 $scope.stopSpin();
             });
             
