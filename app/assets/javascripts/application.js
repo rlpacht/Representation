@@ -1107,7 +1107,9 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
             console.log(status)
             $scope.hasError = true;
             if (status >= 300 || status < 200 || status.length === 0) {
-                $scope.errorMessage = "Uh oh. Something seems to have gone wrong on with the server."
+                // $scope.errorMessage = "Uh oh. Something seems to have gone wrong on with the server."
+                debugger
+                $scope.errorMessage = data
                 $scope.stopSpin();
                 $scope.searchedPolitician = null;
             }

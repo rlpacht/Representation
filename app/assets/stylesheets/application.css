@@ -27,10 +27,18 @@
  	margin: 10%;
  }
 
+ .title {
+ 	font-size: 60px;
+ }
+
+ .sub-title {
+ 	font-size: 35px;
+ }
+
  .title, .sub-title {
  	color: white;
    -webkit-text-fill-color: white; /* Will override color (regardless of order) */
-   -webkit-text-stroke-width: 1.2px;
+   -webkit-text-stroke-width: 1.8px;
    -webkit-text-stroke-color: black;
  }
 

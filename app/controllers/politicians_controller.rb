@@ -15,10 +15,13 @@ class PoliticiansController < ApplicationController
 		politician_name = politician_name.downcase
 		cycle = params[:cycle] || '2014'
 		limit = params[:limit] || 30
-		check_database(politician_name, cycle)
-		# top_contributors_hash = Contribution.joins(:contributor).group("contributors.name").group("transaction_id").where({politician_id: 1, cycle: 2014}).where.not({transaction_id: 'pac2pac'}).order('SUM(contributions.amount) DESC').limit(10).sum(:amount)
-		# TODO: Move this into a helper, so it can be used independently
-		# of sending it as a response
+		db_check = check_database(politician_name, cycle)
+		# if db_check.empty?
+		# 	flash[:notice] = "Unfortunately, due to database limitiations, a query this large cannot be "
+		# 	respond_to do |f|
+		# 		f.json {render error: {data: "too much info"}}
+		# 	end
+		# end
 		@politician = Politician.find_by_name(politician_name)
 		sorted = @politician.top_contributors({cycle: cycle, limit: limit, id: @politician.id})
 
@@ -83,6 +86,7 @@ class PoliticiansController < ApplicationController
 			# If the politian is not the in db, none of its contributions are either. 
 			# Create a politician, contributor, and contribution records.
 			@contributions = sunlight_api(cycle, politician_name)
+			# return [] if @contributions.nil?
 			# Each contribution in the API contains information about the 
 			# receiving politician
 			politician_info = {
@@ -172,13 +176,13 @@ class PoliticiansController < ApplicationController
 			puts "page #{query[:query][:page]}"
 			response = self.class.get("", query)
 			parsed_response = JSON.parse(response.body)
-			break if parsed_response.empty?
+			break if parsed_response.empty? || query[:query][:page] == 5
 			all_contributions = all_contributions.concat(parsed_response)
 			query[:query][:page] += 1
-			if query[:query][:page] == 10
-				# send error
-			end
-		end 
+		end
+		# if query[:query][:page] == 5
+		# 	all_contributions = []
+		# end
 
 		all_contributions
 	end

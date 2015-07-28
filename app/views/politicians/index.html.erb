@@ -10,22 +10,17 @@
 	</div>
 	<div ng-app="PoliticsApp">
 	    <div ng-controller="GraphCtrl">
-    		<form id="politician-search" class="form-inline">
-    			<!-- <input class="cycle-input form-control-small form-inline" type="number" placeholder="Election Cycle" ng-model="politicianData.electionCycle"> -->
-    			<select class="cycle-input form-control" ng-model="politicianData.electionCycle">
-    			  <option value=2014 selected>2014</option>
-    			  <option value=2012>2012</option>
-    			  <option value=2010>2010</option>
-    			  <option value=2008>2008</option>
-    			</select> 
-
+	    	<% if flash[:notice] %>
+	    	   <div class="notice"><%= flash[:notice] %></div>
+	    	 <% end %>
+    		<form id="politician-search" class="form-inline form-control-small">
     			<span 
     				class="angucomplete-holder" 
     				ng-class="{'angucomplete-dropdown-visible': showDropdown}">
 					<angucomplete-alt 
 						id="ex1"
 						placeholder="Candidates Full Name"
-						maxlength="50" 
+						maxlength="20" 
 						selected-object="politicianData.name"
 						local-data="congressMembers"
 						search-fields="name"
@@ -35,6 +30,12 @@
 						 
 					/>
     			</span>
+    			<select class="cycle-input form-control" ng-model="politicianData.electionCycle">
+    			  <option value=2014 selected>2014</option>
+    			  <option value=2012>2012</option>
+    			  <option value=2010>2010</option>
+    			  <option value=2008>2008</option>
+    			</select>
     	 		<input 
     	 			class="submit-button btn btn-primary"
     	 			type="submit"
