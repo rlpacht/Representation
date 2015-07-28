@@ -1067,7 +1067,9 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
             $scope.secondChartDescription = "Contrubutions from PACs vs All Other Contributors"
             $http.get("/total.json", {params:politicianInfo}).success(function (res) {
                 $scope.total = res.data.total;
+                console.log($scope.total)
                 var totalMinusTopContributors = $scope.total - $scope.totalFromTopContributors;
+                console.log($scope.total)
                 topContributionNames.push("Remainder")
                 topContributionAmounts.push(totalMinusTopContributors);
                 $scope.topContributionNames = topContributionNames;
@@ -1078,6 +1080,8 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
             // once after subtracting pac contributions
             // and again when I concat $scope.topContributionAmounts because it already contains a total
             $http.get("/amount_from_pacs.json", {params:politicianInfo}).success(function (res) {
+                $scope.pacContributionAmounts = [];
+                $scope.pacContributionNames = [];
                 var pacContributions = res.data;
                 pacContributions.forEach(function(contribution) {
                     var name = contribution[0];

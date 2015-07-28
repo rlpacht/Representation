@@ -175,6 +175,9 @@ class PoliticiansController < ApplicationController
 			break if parsed_response.empty?
 			all_contributions = all_contributions.concat(parsed_response)
 			query[:query][:page] += 1
+			if query[:query][:page] == 10
+				# send error
+			end
 		end 
 
 		all_contributions

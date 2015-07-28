@@ -34,6 +34,7 @@ class Contribution < ActiveRecord::Base
 	   		.joins(:contributor)
 	   		.group("contributors.name")
 	   		.where({politician_id: politician_id, cycle: cycle, transaction_id: 'pac2pac'})
+	   		.where("amount > ?", 0)
 	   		.order('SUM(contributions.amount) DESC')
 	   		.sum(:amount).sort()
    		return pacs
