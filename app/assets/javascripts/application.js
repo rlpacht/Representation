@@ -1093,10 +1093,6 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
                 for (var i = 0; i < $scope.pacContributionAmounts.length; i++) {
                     totalMinusTopPacs -= $scope.pacContributionAmounts[i];
                 }
-
-                // $scope.pacContributionNames = $scope.pacContributionNames.concat(topContributionNames);
-                
-                // $scope.pacContributionAmounts = $scope.pacContributionAmounts.concat(topContributionAmounts);
                 $scope.pacContributionAmounts.push(totalMinusTopPacs);
                 $scope.pacContributionNames.push("Remainder")
                 $scope.stopSpin();
@@ -1106,8 +1102,6 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
             console.log(status)
             $scope.hasError = true;
             if (status >= 300 || status < 200 || status.length === 0) {
-                // $scope.errorMessage = "Uh oh. Something seems to have gone wrong on with the server."
-                debugger
                 $scope.errorMessage = data
                 $scope.stopSpin();
                 $scope.searchedPolitician = null;

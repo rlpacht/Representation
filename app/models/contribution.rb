@@ -22,7 +22,7 @@ class Contribution < ActiveRecord::Base
     	cycle = options[:cycle]
 		politician_id = options[:politician_id]
 
-    	total = Contribution.where({politician_id: politician_id, cycle: cycle}).sum(:amount)
+    	total = Contribution.where({politician_id: politician_id, cycle: cycle}).where("amount > ?", 0).sum(:amount)
     	return total
     end
 
