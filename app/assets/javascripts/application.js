@@ -898,7 +898,6 @@ PoliticsApp.controller('GraphCtrl', ['$scope', '$timeout', '$http', 'usSpinnerSe
     {"name":"Roland Burris"},
     {"name":"Edward M. Kennedy"},
     {"name":"Mike Johanns"},
-    {"name":"Hillary Rodham Clinton"},
     {"name":"Kay Hagan"},
     {"name":"Bob Casey"},
     {"name":"Bob Bennett"},
