@@ -3,8 +3,6 @@ Rails.application.routes.draw do
 
   get "/", to: "welcome#index"
 
-  get "/data", to: "welcome#show_data"
-
   get "/search", to: "politicians#index"
 
   get "/contributions", to: "politicians#top_contributors"

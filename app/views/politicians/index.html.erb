@@ -1,82 +1,115 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+ <title></title>
 
 </head>
 <body>
-	<div id="page-header" class="page-header">
-	  <h1 class="app-name">Representation <!-- <small>Subtext for header</small> --></h1>
-	</div>
-	<div ng-app="PoliticsApp">
-	    <div ng-controller="GraphCtrl">
-	    	<% if flash[:notice] %>
-	    	   <div class="notice"><%= flash[:notice] %></div>
-	    	 <% end %>
-    		<form id="politician-search" class="form-inline form-control-small">
-    			<span 
-    				class="angucomplete-holder" 
-    				ng-class="{'angucomplete-dropdown-visible': showDropdown}">
-					<angucomplete-alt 
-						id="ex1"
-						placeholder="Candidates Full Name"
-						maxlength="20" 
-						selected-object="politicianData.name"
-						local-data="congressMembers"
-						search-fields="name"
-						title-field="name"
-						minlength="1"
-						input-class="form-control form-control-small form-inline politician-search-field" 
-						 
-					/>
-    			</span>
-    			<select class="cycle-input form-control" ng-model="politicianData.electionCycle">
-    			  <option value=2014 selected>2014</option>
-    			  <option value=2012>2012</option>
-    			  <option value=2010>2010</option>
-    			  <option value=2008>2008</option>
-    			</select>
-    	 		<input 
-    	 			class="submit-button btn btn-primary"
-    	 			type="submit"
-    	 			ng-click="getData()"
-    	 			ng-disabled="disableSubmit()">
-    		</form> 
+  <div id="page-header" class="page-header">
+    <h1 class="app-name">Representation <!-- <small>Subtext for header</small> --></h1>
+  </div>
 
-    		<span us-spinner spinner-key="spinner-1"></span>
+  <div ng-app="PoliticsApp">
+    <div ng-controller="GraphCtrl">
+      <% if flash[:notice] %>
+        <div class="notice"><%= flash[:notice] %></div>
+      <% end %>
 
-    		<h1 id="searched-politician">
-    			{{searchedPolitician}}
-    		</h1>
+      <form id="politician-search" class="form-inline form-control-small">
+        <span
+          class="angucomplete-holder"
+          ng-class="{'angucomplete-dropdown-visible': showDropdown}">
 
-    		<h3 class="error-message" ng-show="hasError"> 
-    			{{errorMessage}}
-    		</h3>
-    		<!-- Use ng-if, because ng-hide interferes with the chart rendering -->
-    		<div class="result-charts" ng-if="displayCharts()">
-	    		
-	    		<h4 class="chart-descriptions"> {{firstChartDescription}} </h4>
-		    	<canvas 
-		    		id="pie" 
-		    		class="chart chart-pie" 
-		    		data="topContributionAmounts"
-		    		labels="topContributionNames" 
-		    		legend="true" 
-		    		animateRotate="false"
-		    		height="105">
-		    	</canvas> 
-		    
-		    	<h4 class="chart-descriptions"> {{secondChartDescription}} </h4>
-	    	   	<canvas 
-	    	   		id="pie" 
-	    	   		class="chart chart-pie" 
-	    	   		data="pacContributionAmounts"
-	    	   		labels="pacContributionNames" 
-	    	   		legend="true"
-	    	   		height="105">
-	    	   	</canvas> 
-		    </div>
-	    </div>
-	</div>
+          <angucomplete-alt
+            id="ex1"
+            placeholder="Candidates Full Name"
+            maxlength="20"
+            selected-object="politicianData.name"
+            local-data="congressMembers"
+            search-fields="name"
+            title-field="name"
+            minlength="1"
+            input-class="form-control form-control-small form-inline politician-search-field"
+          />
+        </span>
+
+        <select class="cycle-input form-control" ng-model="politicianData.electionCycle">
+          <option value=2014 selected>2014</option>
+          <option value=2012>2012</option>
+          <option value=2010>2010</option>
+          <option value=2008>2008</option>
+        </select>
+
+        <input
+          class="submit-button btn btn-primary"
+          type="submit"
+          ng-click="getData()"
+          ng-disabled="disableSubmit()">
+      </form>
+
+      <div class="popular-searches">
+        <h2>Popular Searches</h2>
+
+        <button class="btn btn-success" ng-click="popularSearch('Bernie Sanders', 2014)">
+          Bernie Sanders in 2014
+        </button>
+
+        <button class="btn btn-success" ng-click="popularSearch('Marco Rubio', 2014)">
+          Marco Rubio in 2014
+        </button>
+
+        <button class="btn btn-success" ng-click="popularSearch('Hillary Clinton', 2008)">
+          Hillary Clinton in 2008
+        </button>
+
+        <button class="btn btn-success" ng-click="popularSearch('Rand Paul', 2014)">
+          Rand Paul in 2014
+        </button>
+
+        <button class="btn btn-success" ng-click="popularSearch('Barack Obama', 2008)">
+          Barack Obama in 2008
+        </button>
+      </div>
+
+      <span us-spinner spinner-key="spinner-1"></span>
+
+      <h1 id="searched-politician">
+        {{searchedPolitician}}
+      </h1>
+
+      <h3 class="error-message" ng-show="hasError">
+        {{errorMessage}}
+      </h3>
+
+      <!-- Use ng-if, because ng-hide interferes with the chart rendering -->
+      <div class="result-charts" ng-if="displayCharts()">
+
+        <h4 class="chart-descriptions"> {{firstChartDescription}} </h4>
+
+        <canvas
+          id="pie"
+          class="chart chart-pie"
+          data="topContributionAmounts"
+          labels="topContributionNames"
+          legend="true"
+          animateRotate="false"
+          height="105">
+        </canvas>
+
+        <h4 class="chart-descriptions"> {{secondChartDescription}} </h4>
+
+        <canvas
+          id="pie"
+          class="chart chart-pie"
+          data="pacContributionAmounts"
+          labels="pacContributionNames"
+          legend="true"
+          height="105">
+        </canvas>
+      </div>
+
+    </div>
+  </div>
+
 </body>
 </html>
